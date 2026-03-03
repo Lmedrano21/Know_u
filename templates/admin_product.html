@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}{{ action }} Producto - Know U{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 150px auto 50px;
+        padding: 30px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+    }
+    .btn-submit {
+        background-color: var(--main-color);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{{ action }} Producto</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label>Nombre del Producto</label>
+            <input type="text" name="name" value="{{ product.name if product else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label>Precio (ej: $25.00)</label>
+            <input type="text" name="price" value="{{ product.price if product else '' }}" required>
+        </div>
+        <div class="form-group">
+            <label>Categoría</label>
+            <select name="category">
+                <option value="Mujer" {% if product and product.category == 'Mujer' %}selected{% endif %}>Mujer</option>
+                <option value="Hombre" {% if product and product.category == 'Hombre' %}selected{% endif %}>Hombre</option>
+                <option value="Accesorios" {% if product and product.category == 'Accesorios' %}selected{% endif %}>Accesorios</option>
+                <option value="Bolsos" {% if product and product.category == 'Bolsos' %}selected{% endif %}>Bolsos</option>
+                <option value="Joyería" {% if product and product.category == 'Joyería' %}selected{% endif %}>Joyería</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>URL de Imagen (Ruta relativa o URL)</label>
+            <input type="text" name="image_url" value="{{ image_url }}" placeholder="static/images/..." required>
+        </div>
+        <div class="form-group">
+            <label>Descripción</label>
+            <textarea name="description" rows="5">{{ product.description if product else '' }}</textarea>
+        </div>
+        <button type="submit" class="btn-submit">Guardar Producto</button>
+        <a href="{{ url_for('admin_dashboard') }}" style="display:block; text-align:center; margin-top:15px; color:#666;">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

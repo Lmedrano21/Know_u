@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/productDetails.css') }}">
+<!-- animation icon -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+{% endblock %}
+
+{% block content %}
+        <div class="container">
+        <div class="productDetails" data-product-id="{{ product_id }}">
+            <div class="images">
+                <img id="product_image" src="" alt="productDetails">
+            </div>
+            <div class="details">
+                <span class="category_name"></span>
+                <h2 class="product_name"></h2>
+                <h3 class="product_price"></h3>
+                <p class="product_des"></p>
+                <div class="buttons">
+                    <div class="counts">
+                          <button id="minus" class="counts_btns">-</button>
+                          <input type="number" inputmode="numeric" name="productCount" min="1" step="1" max="999"
+                           class="product_count" id="productCount" value="1">
+                          <button id="plus" class="counts_btns">+</button>
+                    </div>
+                    <button id="btn_add">Añadir al Carrito</button>
+                </div>
+                
+            </div>
+        </div>
+        </div>
+    <!-- alert -->
+    <div class="toast-overlay" id="toast-overlay">
+        <div class="success-msg">
+            <div id="checkIcon" style="width: 100px; height: 100px;"></div>
+            <h4>Tu artículo se ha añadido a la bolsa de compras</h4>
+        </div>
+    </div> 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/getDetails.js') }}"></script>
+{% endblock %}

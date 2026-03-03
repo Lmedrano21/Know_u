@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cartPage.css') }}">
+{% endblock %}
+
+{% block content %}
+    <main class="cart_page">
+        <div class="container">
+            <h1>Bolsa de Compras</h1>
+             <div class="content">
+                <div class="left_side_cart">
+                    <div class="cart_title">
+                      <h2>Mi bolsa de compras <span id="cart_counts"></span></h2>
+                    </div>
+                    <div class="cart_products">
+                      <!-- add cart products in js -->
+                    </div>
+                 </div>
+                 <div class="right_side_cart">
+                    <div class="Promotional_code">
+                        <h2>
+                            ¿Tienes un código promocional?
+                        </h2>
+                        <div class="apply_code">
+                            <input type="text" id="code" placeholder="Código promocional">
+                            <button >Aplicar</button>
+                        </div>
+                    </div>
+                    <div class="summary">
+                        <h2>Resumen del Pedido</h2>
+                        <div class="summary_price">
+                            <div> 
+                                <h4>Subtotal</h4>
+                                <span id="Subtotal"></span>
+                            </div>
+                            <div class="Delivery">
+                                <h4>Envío</h4>
+                                <span id="Delivery">$70.00</span>
+                            </div>
+                            <div>
+                                <h4>Total</h4>
+                                <span id="total_order"></span>
+                            </div>
+                        </div>
+                        <button class="checkout" onclick="checkOut();">Finalizar Compra</button>
+                    </div>
+                 </div>
+             </div>
+        </div>
+    </main>
+{% endblock %}

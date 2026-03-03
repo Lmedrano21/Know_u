@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="checkout" id="checkout-overlay">
+         <div class="checkout-container">
+            <div id="checkoutIcon" style="width: 200px; height: 200px;"></div>
+            <h4>gracias. tu pedido ha sido recibido</h4>
+            <div>
+                <span>pedido:</span> <span id="id_order">1</span>
+                <span>total:</span> <span id="total_price"> $ 124.05</span>
+                <span>fecha:</span> <span id="order_date"></span>
+            </div>
+            <button id="back_btn" onclick="window.location.href='{{ url_for('index') }}'">volver al inicio</button>
+         </div>
+    </div> 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}
