@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+    <section id="login">
+       <div class="container">
+        <h1 class="section-header">Crear cuenta</h1>
+        <form id="form" method="POST" action="{{ url_for('signup') }}">
+            <input type="text" name="fname" placeholder="Nombre" id="fname">
+            <input type="text" name="lname" placeholder="Apellido" id="lname">
+            <input type="text" name="email" placeholder="Correo Electrónico" id="email">
+            <input type="password" name="Password" placeholder="Contraseña" id="password">
+            <div class="submit">
+                <button type="submit" id="btn-login">Crear</button> 
+                <a href="{{ url_for('index') }}" id="signup">Volver a la tienda</a>
+            </div>  
+        </form>
+       </div>
+        
+    </section>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Mi Perfil - Know U{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 150px auto 50px;
+        padding: 20px;
+    }
+    .profile-header {
+        border-bottom: 1px solid #eee;
+        margin-bottom: 30px;
+        padding-bottom: 10px;
+    }
+    .order-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+    .order-items ul {
+        list-style: none;
+        padding: 0;
+    }
+    .order-items li {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        color: #555;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <h1>Hola, {{ current_user.first_name }}</h1>
+        <p>Aquí está tu historial de pedidos.</p>
+        <a href="{{ url_for('logout') }}" style="display: inline-block; margin-top: 10px; color: #d9534f; text-decoration: none; font-weight: 600; border: 1px solid #d9534f; padding: 5px 15px; border-radius: 4px;">Cerrar Sesión</a>
+    </div>
+
+    {% if orders %}
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <span>Pedido #{{ order.id }}</span>
+                <span>{{ order.date.strftime('%d/%m/%Y') }}</span>
+                <span style="color: var(--main-color);">Total: ${{ "%.2f"|format(order.total_price) }}</span>
+            </div>
+            <div class="order-items">
+                <ul>
+                    {% for item in order.items %}
+                    <li>
+                        <span>{{ item.quantity }}x {{ item.product.name }}</span>
+                        <span>${{ "%.2f"|format(item.price) }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Aún no has realizado ninguna compra.</p>
+        <a href="{{ url_for('products') }}" class="shop-btn" style="display:inline-block; margin-top:20px;">Ir a la tienda</a>
+    {% endif %}
+</div>
+{% endblock %}

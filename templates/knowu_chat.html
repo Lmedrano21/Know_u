@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Know U - Diseño con IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/knowu.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="user-profile">
+                <img src="{{ url_for('static', filename='images/woman/image67.webp') }}" alt="Elena C." class="avatar" loading="lazy" style="object-fit: cover;">
+                <span class="username">ELENA C.</span>
+            </div>
+            <div class="project-title">
+                <h2>DISEÑO CHAQUETA TECHWEAR</h2>
+                <p>CON IA (VERSIÓN 3)</p>
+            </div>
+            <div class="brand-logo">
+                <img src="{{ url_for('static', filename='images/logowhite.png') }}" alt="Know U Logo" class="brand-img">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </div>
+        </header>
+
+        <div class="main-body">
+            
+            <aside class="sidebar-left">
+                <div class="sidebar-section">
+                    <h3>DISEÑOS RECIENTES</h3>
+                    <div class="recent-designs">
+                        <img src="{{ url_for('static', filename='images/woman/Jacket-_-Sun-Bleached_01.webp') }}" alt="Diseño 1" class="design-thumb" loading="lazy">
+                        <img src="{{ url_for('static', filename='images/man/hoodie-in-blue_01.webp') }}" alt="Diseño 2" class="design-thumb" loading="lazy">
+                    </div>
+                </div>
+                <div class="online-status">
+                    <p>EN LÍNEA: 2 MÁS</p>
+                </div>
+                <div class="bottom-actions">
+                    <div class="action-icon">
+                        <i class="fa-solid fa-book"></i>
+                        <span>BIBLIOTECA DE DISEÑOS</span>
+                    </div>
+                    <button class="new-chat-btn">NUEVO CHAT</button>
+                </div>
+            </aside>
+
+            <main class="chat-area">
+                <div class="chat-container" id="chat-container">
+                    <div class="empty-chat-state" id="empty-chat-state">
+                        <img src="{{ url_for('static', filename='images/logowhite.png') }}" alt="Know U" class="empty-logo">
+                        <h3>¿QUÉ VAMOS A DISEÑAR HOY, ELENA?</h3>
+                        <p>Selecciona una sugerencia o escribe tu idea abajo.</p>
+                        <div class="suggestion-chips">
+                            <button class="chip-btn" id="demo-techwear-btn"><i class="fa-solid fa-bolt"></i> Cargar Demo: Chaqueta Techwear</button>
+                            <button class="chip-btn"><i class="fa-solid fa-shirt"></i> Camisa Oversize Cyberpunk</button>
+                            <button class="chip-btn"><i class="fa-solid fa-shoe-prints"></i> Sneakers Urbanos Holográficos</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="floating-panel hidden" id="floating-panel">
+                    <h4>MODELOS PREDEFINIDOS</h4>
+                    <div class="clothing-grid">
+                        <div class="clothing-item"><i class="fa-solid fa-shirt"></i><p>CAMISA</p></div>
+                        <div class="clothing-item"><i class="fa-solid fa-vest"></i><p>SUÉTER</p></div>
+                        <div class="clothing-item"><i class="fa-solid fa-person-dress"></i><p>VESTIDO</p></div>
+                        <div class="clothing-item"><i class="fa-solid fa-shirt"></i><p>BLUSA</p></div>
+                    </div>
+                    <h4>SELECTOR DE COLOR</h4>
+                    <div class="color-picker">
+                        <div class="color-circle" style="background: #000;"></div>
+                        <div class="color-circle" style="background: #fff; border: 1px solid #ccc;"></div>
+                        <div class="color-circle" style="background: #4a5d4e;"></div>
+                        <div class="color-circle" style="background: #3b4d61;"></div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="sidebar-right">
+                <div class="sidebar-section">
+                    <h3>PROYECTOS COLABORATIVOS</h3>
+                    <div class="collab-avatars">
+                        <img src="{{ url_for('static', filename='images/man/slim-formal-shirt-in-white_01.webp') }}" alt="Colaborador Adrián" class="avatar" loading="lazy" style="object-fit: cover;">
+                        <img src="{{ url_for('static', filename='images/woman/image76.webp') }}" alt="Colaboradora L'Careijaro" class="avatar" loading="lazy" style="object-fit: cover;">
+                    </div>
+                    <div class="typing-indicators">
+                        <p>ADRIÁN - ESCRIBIENDO</p>
+                        <p>L'CAREIJARO - ESCRIBIENDO</p>
+                    </div>
+                </div>
+                <div class="bottom-actions">
+                    <div class="action-icon">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>CONFIGURACIÓN</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+<div class="chat-input-area">
+            <button class="icon-action dark" id="toggle-panel-btn" title="Toggle Panel"><i class="fa-solid fa-sliders"></i></button>
+            <button class="icon-action dark"><i class="fa-solid fa-paperclip"></i></button>
+            <button class="icon-action dark"><i class="fa-solid fa-camera"></i></button>
+            
+            <input type="text" id="chat-input-field" placeholder="DISEÑA CON LA IA O PIDE CAMBIOS..." autocomplete="off">
+            
+            <button class="icon-action clear"><i class="fa-solid fa-microphone"></i></button>
+            <button class="icon-action clear"><i class="fa-solid fa-wave-square"></i></button>
+            <button class="icon-action brand" id="send-btn">
+                <img src="{{ url_for('static', filename='images/send.png') }}" style="width:16px; height:16px; filter: invert(1);">
+            </button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/knowu_chat.js') }}"></script>
+</body>
+</html>

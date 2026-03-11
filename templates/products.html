@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+{% endblock %}
+
+{% block content %}
+        <div class="product-header">
+               <div class="menu-icon" onclick="toggleSidebar()">
+                  <ion-icon name="grid-outline"></ion-icon>
+                </div>
+                <div class="product-header-right">
+                    <div class="sortBy">
+                        <span>Ordenar por:</span>
+                        <select id="sort">
+                            <option value="Alphabetically">Alfabéticamente, Z-A</option>
+                            <option value="Featured">Destacados</option>
+                            <option value="Bestselling">Más Vendidos</option>
+                        </select>
+                    </div>
+                    <span id="productCount"></span>
+                </div>
+        </div>
+        <div class="container">
+            <div class="aside">
+                <h2>Categorías</h2>
+                <div class="shop_categories">
+                    <a href="#" class="categories_link" productCategory="Accesorios" >Accesorios</a>
+                    <a href="#" class="categories_link" productCategory="Bolsos">Bolsos</a>
+                    <a href="#" class="categories_link" productCategory="Joyería">Joyería</a>
+                    <a href="#" class="categories_link" productCategory="Mujer">Mujer</a>
+                    <a href="#" class="categories_link" productCategory="Hombre">Hombre</a>
+                    <a href="#" class="categories_link" productCategory="Dormitorio">Dormitorio</a>
+                </div>
+            </div>
+            
+            <div class="products">
+               <div class="content">
+                <!-- add products in js -->
+               </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/getData.js') }}"></script>
+{% endblock %}

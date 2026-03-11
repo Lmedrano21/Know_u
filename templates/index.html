@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+    <!-- slider -->
+    <div class="slider">
+        <div class="slides">
+            <div class="slide">
+                <div class="slide-content">
+                   <img src="{{ url_for('static', filename='images/background/slide16_bdfdea89-9df3-48da-9f0a-888fd50a83d5.webp') }}">
+                   <div class="text">
+                    <h2>Obtén hasta un 30% de descuento en novedades</h2>
+                    <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
+                   </div>
+                </div>
+                <div class="slide-content">
+                    <img src="{{ url_for('static', filename='images/background/background2.webp') }}">
+                    <div class="text">
+                     <h2>Obtén hasta un 30% de descuento en novedades</h2>
+                     <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
+                    </div>
+                 </div>
+                 <div class="slide-content">
+                    <img src="{{ url_for('static', filename='images/background/background3.webp') }}">
+                    <div class="text">
+                     <h2>Obtén hasta un 30% de descuento en novedades</h2>
+                     <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        <div class="navigation">
+            <button class="prev" onclick="prevSlider();">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+            </button>
+            <button class="next" onclick="nextSlider();">
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+            </button>
+        </div>
+    </div>
+    <div class="hero_for_phone">
+        <div class="hero-content">
+            <img src="{{ url_for('static', filename='images/background/phone.webp') }}">
+            <div class="text">
+             <h2>Mini Colección</h2>
+             <p>Colorea el verano en fucsia intenso, rosa chicle</p>
+             <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
+            </div>
+         </div>
+    </div>
+
+    <!-- info -->
+    <div class="information">
+        <div class="info">
+            <div class="info-icon">
+                <img src="{{ url_for('static', filename='images/global-distribution.png') }}" alt="global-distribution" >
+            </div>
+            <div class="info-text">
+                <h3>Envío a todo el mundo</h3>
+                <p> Envío gratis en todos los pedidos de EE. UU. o superiores a $100</p>
+            </div>
+        </div>
+        <div class="info">
+            <div class="info-icon">
+                <img src="{{ url_for('static', filename='images/delivery-status.png') }}" alt="delivery-status" >
+            </div>
+            <div class="info-text">
+                <h3>Devolución en 14 días</h3>
+                <p>Simplemente devuélvelo dentro de 30 días para un cambio.</p>
+            </div>
+        </div>
+        <div class="info">
+            <div class="info-icon">
+                <img src="{{ url_for('static', filename='images/check.png') }}" alt="Security" >
+            </div>
+            <div class="info-text">
+                <h3>Pago Seguro</h3>
+                <p>Garantizamos pago seguro con PEV</p>
+            </div>
+        </div>
+        <div class="info">
+            <div class="info-icon">
+                <img src="{{ url_for('static', filename='images/24-hours-support.png') }}" alt="24-hours-support" >
+            </div>
+            <div class="info-text">
+                <h3>Soporte 24/7</h3>
+                <p>Contáctanos las 24 horas del día, los 7 días de la semana</p>
+            </div>
+        </div>
+    </div>
+    <!-- Top Products -->
+    <div class="top_products">
+        <div class="container">
+            <div class="header">
+                <h3>Productos en Tendencia</h3>
+                <p>Sigue las tendencias más populares y obtén artículos exclusivos de Know U.</p>
+            </div>
+            <div class="products">
+              <!-- add by js -->
+            </div>
+        </div>
+    </div>
+    <!-- collection -->
+    <div class="collection" id="collection" aria-label="collection" data-section>
+        <div class="container">
+          <ul class="collection-list">
+            <li>
+              <div class="collection-card has-before hover:shine">
+
+                <h2 class="card-title">Colección de Verano</h2>
+
+                <p class="card-text">Desde $17.99</p>
+
+                <a href="{{ url_for('products') }}" class="btn-link">
+                  <span>Compra ahora</span>
+
+                  <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+                </a>
+
+                <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner1.webp') }}')"></div>
+                </div>
+            </li>
+
+            <li>
+              <div class="collection-card has-before hover:shine">
+
+                <h2 class="card-title">¿Qué hay de nuevo?</h2>
+
+                <p class="card-text">Consigue el brillo</p>
+
+                <a href="#" class="btn-link">
+                  <span>Descubre ahora</span>
+
+                  <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+                </a>
+
+                <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner2.webp') }}')"></div>
+              </div>
+            </li>
+
+            <li>
+              <div class="collection-card has-before hover:shine">
+
+                <h2 class="card-title">Compra 1 y Llévate 1</h2>
+
+                <p class="card-text">Desde $7.99</p>
+
+                <a href="#" class="btn-link">
+                  <span>Descubre ahora</span>
+                  <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+                </a>
+
+                <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner3.webp') }}')"></div>
+
+              </div>
+            </li>
+
+          </ul>
+        </div>
+    </div>
+    <!-- news -->
+    <div class="news hight">
+        <div class="news-text">
+            <h4>Boletín</h4>
+            <p>
+                Suscríbete a nuestro boletín y obtén un 20% de descuento en tu primera compra
+            </p>
+        </div>
+        <div class="Subscribe-form">
+            <input type="email" name="email" placeholder="Ingresa tu correo electrónico" autocomplete="off">
+            <button type="submit" value="submit">
+                <img src="{{ url_for('static', filename='images/send.png') }}" alt="send-data" width="30"/>
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}

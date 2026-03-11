@@ -1,0 +1,369 @@
+[
+    {
+        "id": 1,
+        "name": "Gafas de Sol Retro",
+        "price": "$225.00",
+        "images": [
+            "images/Accessories/Retro-sunglasses_03.webp"
+        ],
+        "category": "Accesorios",
+        "description": "Estas Gafas de Sol Retro ofrecen un look de inspiración vintage con protección moderna. Perfectas para añadir un toque de estilo a cualquier atuendo."
+    },
+    {
+        "id": 2,
+        "name": "Pañuelo Triangular Miley",
+        "price": "$22.00",
+        "images": [
+            "images/Accessories/scrf1.webp",
+            "images/Accessories/scrf2.webp",
+            "images/Accessories/scrf3.webp"
+        ],
+        "category": "Accesorios",
+        "isTrending":true,
+        "description": "El Pañuelo Triangular Miley es un accesorio versátil que se puede peinar de múltiples formas. Hecho de tela suave y transpirable."
+    },
+    {
+        "id": 3,
+        "name": "Zapatillas de Lona con Plataforma",
+        "price": "$77.00",
+        "images": [
+            "images/Accessories/Platform-Canvas-Sneakers_03.webp"
+        ],
+        "category": "Accesorios",
+        "description": "Las Zapatillas de Lona con Plataforma brindan comodidad y altura. Ideales para salidas casuales y añadir un toque moderno a tu look."
+    },
+    {
+        "id": 4,
+        "name": "Sandalia Mule de Tacón Acolchada",
+        "price": "$128.00",
+        "images": [
+            "images/Accessories/Quilted-Heeled-Mule-Sandal_01.webp"
+        ],
+        "category": "Accesorios",
+        "description": "La Sandalia Mule de Tacón Acolchada combina elegancia y comodidad. Perfecta para vestir cualquier atuendo con un toque de sofisticación."
+    },
+    {
+        "id": 5,
+        "name": "Tops Bandeau Cortos Definitivos",
+        "price": "$22.00",
+        "images": [
+            "images/woman/ultimate-crop-bandeau-tops_01.webp",
+            "images/woman/ultimate-crop-bandeau-tops_black_01.webp",
+            "images/woman/ultimate-crop-bandeau-tops_black_02.webp"
+        ],
+        "category": "Mujer",
+        "isTrending": true,
+        "description": "Los Tops Bandeau Cortos Definitivos son ideales para usar en capas o solos. Hechos con tela suave y elástica para un ajuste cómodo."
+    },
+    {
+        "id": 6,
+        "name": "Sandalia Adilette",
+        "price": "$85.00",
+        "images": [
+            "images/Accessories/Adilette-Slide-Sandal_01.webp",
+            "images/Accessories/Adilette-Slide-Sandal_color_01.webp"
+        ],
+        "category": "Accesorios",
+        "description": "Las Sandalias Adilette son perfectas para uso casual. Cuentan con una plantilla cómoda y un diseño fácil de poner."
+    },
+    {
+        "id": 7,
+        "name": "Suéter de Manga Corta Pieces",
+        "price": "$100.00",
+        "images": [
+            "images/woman/Pieces-short-sleeve-sweater_01.webp",
+            "images/woman/Pieces-short-sleeve-sweater_02.webp",
+            "images/woman/Pieces-short-sleeve-sweater_03.webp"
+        ],
+        "category": "Mujer",
+        "isTrending": true,
+        "description": "El Suéter de Manga Corta Pieces es una adición acogedora y elegante a tu guardarropa. Hecho de material suave y transpirable."
+    },
+    {
+        "id": 8,
+        "name": "Cárdigan Acanalado Simona",
+        "price": "$82.00 - $89.00",
+        "images": [
+            "images/woman/Simona-Ribbed-Cardigan_05.webp",
+            "images/woman/Simona-Ribbed-Cardigan_03.webp",
+            "images/woman/SW1.webp"
+        ],
+        "category": "Mujer",
+        "isTrending": true,
+        "description": "El Cárdigan Acanalado Simona es perfecto para usar en capas. Su textura acanalada y diseño versátil lo convierten en un imprescindible para cualquier temporada."
+    },
+    {
+        "id": 9,
+        "name": "Camiseta Oversize Multicolor",
+        "price": "$50.00",
+        "images": [
+            "images/woman/image68.webp",
+            "images/woman/image67.webp"
+        ],
+        "category": "Mujer",
+        "isTrending": true,
+        "description": "La Camiseta Oversize Multicolor ofrece un ajuste relajado y un diseño vibrante. Ideal para un uso casual y cómodo."
+    },
+    {
+        "id": 10,
+        "name": "Sudadera Oversize Clásica",
+        "price": "$158.00",
+        "images": [
+            "images/woman/classic-oversized-sweatshirt_01.webp",
+            "images/woman/classic-oversized-sweatshirt_04.webp"
+        ],
+        "category": "Mujer",
+        "description": "Esta Sudadera Oversize Clásica es perfecta para un look acogedor y relajado. Hecha de material de alta calidad para mayor comodidad."
+    },
+    {
+        "id": 11,
+        "name": "Sombrero de Paja Flexible",
+        "price": "$54.00",
+        "images": [
+            "images/Accessories/straw-floppy-hat_03.webp"
+        ],
+        "category": "Accesorios",
+        "description": "El Sombrero de Paja Flexible es un accesorio elegante para los días soleados. Ofrece gran protección solar mientras añade un toque chic a tu atuendo."
+    },
+    {
+        "id": 12,
+        "name": "Gafas Ojo de Gato 20257",
+        "price": "$86.00",
+        "images": [
+            "images/Accessories/sunglasses1.webp"
+        ],
+        "category": "Accesorios",
+        "description": "Las Gafas Ojo de Gato 20257 presentan un diseño clásico con un toque moderno. Perfectas para añadir un toque sofisticado a cualquier look."
+    },
+    {
+        "id": 13,
+        "name": "Riñonera Deportiva Pride",
+        "price": "$39.00",
+        "images": [
+            "images/Bags/Pride-Sport-Hip-Pack-_04.webp",
+            "images/Bags/Pride-Sport-Hip-Pack-_03.webp"
+        ],
+        "category": "Bolsos",
+        "description": "La Riñonera Deportiva Pride es perfecta para llevar lo esencial con las manos libres. Cuenta con un diseño vibrante y múltiples compartimentos para mayor comodidad."
+    },
+    {
+        "id": 14,
+        "name": "Bolso de Baile de Nylon",
+        "price": "$18.00",
+        "images": [
+            "images/Bags/p27-3_7e6d6ca6-5882-4c64-a166-577d894b0ac3.webp",
+            "images/Bags/p27-1_1bcb95c6-a3da-4de5-b15e-ec08d4cb84b9.webp"
+        ],
+        "category": "Bolsos",
+        "description": "El Bolso de Baile de Nylon es ligero y duradero, ideal para llevar equipo de baile o artículos de gimnasio. Cuenta con un diseño elegante y amplio espacio de almacenamiento."
+    },
+    {
+        "id": 15,
+        "name": "Vestido de Punto en Verde",
+        "price": "$188.00",
+        "images": [
+            "images/woman/knit-dress-in-green_03.webp"
+        ],
+        "category": "Mujer",
+        "description": "El Vestido de Punto en Verde es una pieza versátil que se puede vestir elegante o informal. Hecho de material suave y cómodo."
+    },
+    {
+        "id": 16,
+        "name": "Gorro en Marrón Chocolate",
+        "price": "$48.00",
+        "images": [
+            "images/woman/beanie-in-chocolate-brown_03.webp",
+            "images/woman/beanie-in-chocolate-brown_02.webp"
+        ],
+        "category": "Mujer",
+        "description": "Este Gorro en Marrón Chocolate es perfecto para mantenerse abrigado con estilo. Hecho de tela suave y elástica para un ajuste cómodo."
+    },
+    {
+        "id": 17,
+        "name": "Camiseta de Tirantes Relajada para Gimnasio",
+        "price": "$148.00",
+        "images": [
+            "images/woman/relaxed-gym-tank-top_01.webp",
+            "images/woman/relaxed-gym-tank-top_04.webp"
+        ],
+        "category": "Mujer",
+        "description": "La Camiseta de Tirantes Relajada para Gimnasio es perfecta para entrenamientos y uso casual. Hecha de tela transpirable para máxima comodidad."
+    },
+    {
+        "id": 18,
+        "name": "Sudadera Gráfica Oversize",
+        "price": "$78.00",
+        "images": [
+            "images/woman/image77.webp",
+            "images/woman/image76.webp"
+        ],
+        "category": "Mujer",
+        "description": "Esta Sudadera Gráfica Oversize combina comodidad y estilo. Perfecta para un look relajado y casual."
+    },
+    {
+        "id": 19,
+        "name": "Sudadera con Capucha en Azul",
+        "price": "$198.00",
+        "images": [
+            "images/man/hoodie-in-blue_01.webp",
+            "images/man/hoodie-in-blue_02.webp"
+        ],
+        "category": "Hombre",
+        "description": "La Sudadera con Capucha en Azul ofrece estilo y comodidad. Hecha de material de alta calidad para un ajuste acogedor."
+    },
+    {
+        "id": 20,
+        "name": "Chaqueta con Capucha en Piedra",
+        "price": "$266.00",
+        "images": [
+            "images/man/jacket-with-hood-in-stone_02.webp",
+            "images/man/jacket-with-hood-in-stone_04.webp"
+        ],
+        "category": "Hombre",
+        "isTrending":true,
+        "description": "Esta Chaqueta con Capucha en Piedra proporciona excelente calidez y estilo. Ideal para usar en capas durante el clima más fresco."
+    },
+    {
+        "id": 21,
+        "name": "Camisa Formal Slim en Blanco",
+        "price": "$198.00",
+        "images": [
+            "images/man/slim-formal-shirt-in-white_01.webp",
+            "images/man/slim-formal-shirt-in-white_01.webp"
+        ],
+        "category": "Hombre",
+        "description": "La Camisa Formal Slim en Blanco es perfecta para ocasiones formales. Hecha de tela de alta calidad para un look nítido y profesional."
+    },
+    {
+        "id": 22,
+        "name": "Pantalones Cónicos en Camel",
+        "price": "$106.00",
+        "images": [
+            "images/man/tapered-pants-in-camel-_01.webp",
+            "images/man/tapered-pants-in-camel-_04.webp"
+        ],
+        "category": "Hombre",
+        "description": "Los Pantalones Cónicos en Camel ofrecen un ajuste moderno y un diseño elegante. Perfectos tanto para uso casual como formal."
+    },
+    {
+        "id": 23,
+        "name": "Camisa Revere con Estampado Floral",
+        "price": "$52.00",
+        "images": [
+            "images/man/sleeve-flower-print-revere_02.webp"
+        ],
+        "category": "Hombre",
+        "description": "La Camisa Revere con Estampado Floral presenta un diseño floral único. Ideal para añadir un toque de estilo a tu guardarropa."
+    },
+    {
+        "id": 24,
+        "name": "Sombrero de Pescador Color Block",
+        "price": "$35.00",
+        "images": [
+            "images/man/Color-block-bucket-hat_03.webp",
+            "images/man/Color-block-bucket-hat_04.webp"
+        ],
+        "category": "Hombre",
+        "description": "Este Sombrero de Pescador Color Block es perfecto para un look moderno. Ofrece gran protección solar y un diseño elegante."
+    },
+    {
+        "id": 25,
+        "name": "Pantalones Cargo con Bolsillo Frontal",
+        "price": "$52.00",
+        "images": [
+            "images/man/cargo-pants-with-front-pocket_04.webp",
+            "images/man/cargo-pants-with-front-pocket_03.webp"
+        ],
+        "category": "Hombre",
+        "description": "Los Pantalones Cargo con Bolsillo Frontal son prácticos y elegantes. Perfectos para uso casual con mucho espacio de almacenamiento."
+    },
+    {
+        "id": 26,
+        "name": "Pendientes de Aro con Dije de Mariposa",
+        "price": "$71.00",
+        "images": [
+            "images/Jewelry/Butterfly-Charm-Hoop-Earring_03.webp",
+            "images/Jewelry/Butterfly-Charm-Hoop-Earring_02.webp"
+        ],
+        "category": "Joyería",
+        "isTrending":true,
+        "description": "Los Pendientes de Aro con Dije de Mariposa añaden un toque caprichoso a cualquier atuendo. Hechos con materiales de alta calidad para un uso duradero."
+    },
+    {
+        "id": 27,
+        "name": "Anillo con Circonita Cúbica Transparente en Fila",
+        "price": "$198.00",
+        "images": [
+            "images/Jewelry/ROW-CLEAR-CZ-RING_03.webp",
+            "images/Jewelry/ROW-CLEAR-CZ-RING_02.webp"
+        ],
+        "category": "Joyería",
+        "description": "El Anillo con Circonita Cúbica Transparente en Fila es una pieza de joyería impresionante. Cuenta con circonitas cúbicas brillantes para un toque de elegancia."
+    },
+    {
+        "id": 28,
+        "name": "Anillo Pin con Circonita Cúbica Transparente",
+        "price": "$71.00",
+        "images": [
+            "images/Jewelry/PIN-CLEAR-CZ-RING_01.webp",
+            "images/Jewelry/PIN-CLEAR-CZ-RING_02.webp"
+        ],
+        "category": "Joyería",
+        "description": "El Anillo Pin con Circonita Cúbica Transparente es un accesorio elegante. Hecho con materiales de alta calidad y circonitas cúbicas brillantes."
+    },
+    {
+        "id": 29,
+        "name": "Anillo Dorado con Circonita Cúbica Transparente",
+        "price": "$106.00",
+        "images": [
+            "images/Jewelry/GOLD-TONE-CLEAR-CZ_03.webp",
+            "images/Jewelry/GOLD-TONE-CLEAR-CZ_04.webp"
+        ],
+        "category": "Joyería",
+        "description": "El Anillo Dorado con Circonita Cúbica Transparente añade un toque de lujo a cualquier atuendo. Cuenta con hermosas circonitas cúbicas engastadas en metal dorado."
+    },
+    {
+        "id": 30,
+        "name": "Pulsera Dorada de Estrella y Luna",
+        "price": "$166.00",
+        "images": [
+            "images/Jewelry/Diamante-Butterfly-Necklace_01.webp"
+        ],
+        "category": "Joyería",
+        "description": "La Pulsera Dorada de Estrella y Luna es una pieza de inspiración celestial. Perfecta para añadir un toque de elegancia a tu look."
+    },
+    {
+        "id": 31,
+        "name": "Collar de Letra Floral con Circonita Cúbica",
+        "price": "$195.00",
+        "images": [
+            "images/Jewelry/CLEAR-CZ-FLORAL-LETTER-NECKLACE_01.webp",
+            "images/Jewelry/CLEAR-CZ-FLORAL-LETTER-NECKLACE_02.webp"
+        ],
+        "category": "Joyería",
+        "description": "El Collar de Letra Floral con Circonita Cúbica es una pieza personalizada. Cuenta con circonitas cúbicas brillantes en un diseño floral."
+    },
+    {
+        "id": 32,
+        "name": "Collar de As de Guía Ajustable",
+        "price": "$86.00",
+        "images": [
+            "images/Jewelry/ADJUSTABLE-BOWLINE-NECKLACE_01.webp"
+        ],
+        "category": "Joyería",
+        "description": "El Collar de As de Guía Ajustable es versátil y elegante. Se puede usar en diferentes longitudes para un look personalizado."
+    },
+    {
+        "id": 33,
+        "name": "Chaqueta de Mezclilla Decolorada por el Sol",
+        "price": "$199.00",
+        "images": [
+            "images/woman/Jacket-_-Sun-Bleached_01.webp",
+            "images/woman/Jacket-_-Sun-Bleached_02.webp",
+            "images/woman/Jacket-_-Sun-Bleached_03.webp"
+        ],
+        "isTrending":true,
+        "category": "Mujer",
+        "description": "La Chaqueta de Mezclilla Decolorada por el Sol ofrece un look elegante y moderno con su acabado decolorado. Perfecta para usar sobre atuendos casuales, esta chaqueta está hecha de mezclilla de alta calidad y tiene un ajuste cómodo. Ideal para añadir un toque atrevido a tu guardarropa."
+    }
+]
