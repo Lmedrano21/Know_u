@@ -17,12 +17,7 @@
             <label for="password">Contraseña</label>
             <input type="password" name="Password" placeholder="Contraseña" id="password" onblur="validPassword();">
             <span id="invalidPass" class="alert">La contraseña debe tener al menos 8 caracteres</span>
-            <label for="confirmPassword">Confirmar Contraseña</label>
-            <input type="password" name="confirmPassword" 
-            placeholder="Confirmar Contraseña" 
-            id="confirmPassword" 
-            onblur="validConfirmPassword();">
-            <span id="invalidConfirmPass" class="alert">Las contraseñas no coinciden</span>
+
             <div class="submit">
                 <button type="submit" id="btn-login">Ingresar</button> 
                 <a href="{{ url_for('signup') }}" id="signup">¿Nuevo cliente? Regístrate</a>
@@ -34,5 +29,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+<!-- Validation.js removido porque interfería con login backend de Flask -->
 {% endblock %}

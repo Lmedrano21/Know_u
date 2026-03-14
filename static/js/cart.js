@@ -17,7 +17,7 @@ function addToCart(productId) {
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
-        cart.push({ id: productId, quantity: 1 });
+        cart.push({ id: productId, quantity: 1, type: 'regular' });
     }
     
     localStorage.setItem('knowu_cart', JSON.stringify(cart));
@@ -31,6 +31,29 @@ function addToCart(productId) {
     
     // Feedback visual (opcional)
     alert("Producto añadido al carrito");
+}
+
+// Añadir diseño personalizado IA al carrito
+function addCustomDesignToCart(designId, promptText, imageUrl, basePrice) {
+    // Generamos un ID virtual único para el carrito basado en el timestamp o designId
+    const virtualId = 'custom_' + (designId || Date.now());
+    
+    // Lo guardamos con un type 'custom'
+    cart.push({
+        id: virtualId,
+        type: 'custom',
+        designId: designId,
+        name: 'Diseño IA: ' + promptText.substring(0, 20) + '...',
+        prompt: promptText,
+        price: basePrice,
+        image_url: imageUrl,
+        quantity: 1
+    });
+    
+    localStorage.setItem('knowu_cart', JSON.stringify(cart));
+    updateCartCounter();
+    
+    alert("Diseño IA añadido al carrito");
 }
 
 // Renderizar carrito lateral (Side Cart)
@@ -56,29 +79,51 @@ async function renderSideCart() {
         const allProducts = await response.json();
         
         cart.forEach(item => {
-            const product = allProducts.find(p => p.id === item.id);
-            if (product) {
-                // Limpiar precio string "$225.00" -> 225.00
-                const priceNumber = parseFloat(product.price.replace(/[^0-9.-]+/g,""));
+            if (item.type === 'custom') {
+                // Renderizado para ítem personalizado IA
+                const priceNumber = parseFloat(item.price);
                 totalPrice += priceNumber * item.quantity;
                 
-                const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
-
                 cartContainer.innerHTML += `
                     <div class="cart-item">
-                        <img src="${imagePath}" alt="${product.name}">
+                        <img src="${item.image_url}" alt="Diseño IA">
                         <div class="item-details">
-                            <h4>${product.name}</h4>
-                            <p>${product.price} x ${item.quantity}</p>
+                            <h4>${item.name}</h4>
+                            <p>$${priceNumber.toFixed(2)} x ${item.quantity}</p>
                             <div class="qty-control">
-                                <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <button onclick="updateQuantity('${item.id}', -1)">-</button>
                                 <span>${item.quantity}</span>
-                                <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                                <button onclick="updateQuantity('${item.id}', 1)">+</button>
                             </div>
                         </div>
-                        <ion-icon name="trash-outline" class="remove-item" onclick="removeFromCart(${item.id})"></ion-icon>
+                        <ion-icon name="trash-outline" class="remove-item" onclick="removeFromCart('${item.id}')"></ion-icon>
                     </div>
                 `;
+            } else {
+                // Renderizado para producto normal
+                const product = allProducts.find(p => p.id === item.id);
+                if (product) {
+                    const priceNumber = parseFloat(product.price.replace(/[^0-9.-]+/g,""));
+                    totalPrice += priceNumber * item.quantity;
+                    
+                    const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
+
+                    cartContainer.innerHTML += `
+                        <div class="cart-item">
+                            <img src="${imagePath}" alt="${product.name}">
+                            <div class="item-details">
+                                <h4>${product.name}</h4>
+                                <p>${product.price} x ${item.quantity}</p>
+                                <div class="qty-control">
+                                    <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                                </div>
+                            </div>
+                            <ion-icon name="trash-outline" class="remove-item" onclick="removeFromCart(${item.id})"></ion-icon>
+                        </div>
+                    `;
+                }
             }
         });
         
@@ -115,37 +160,67 @@ async function renderCartPage() {
         const allProducts = await response.json();
         
         cart.forEach(item => {
-            const product = allProducts.find(p => p.id === item.id);
-            if (product) {
-                const priceNumber = parseFloat(product.price.replace(/[^0-9.-]+/g,""));
+            if (item.type === 'custom') {
+                const priceNumber = parseFloat(item.price);
                 const itemTotal = priceNumber * item.quantity;
                 subtotal += itemTotal;
                 
-                const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
-
                 cartPageContainer.innerHTML += `
                     <div class="cart_card">
                         <div class="card_img">
-                            <img src="${imagePath}" alt="${product.name}">
+                            <img src="${item.image_url}" alt="Diseño IA">
                         </div>
                         <div class="card_details">
-                            <h3>${product.name}</h3>
-                            <p>Categoría: ${product.category}</p>
+                            <h3>${item.name}</h3>
+                            <p title="${item.prompt}">Diseño Personalizado</p>
                             <div class="price_control">
-                                <span class="price">${product.price}</span>
+                                <span class="price">$${priceNumber.toFixed(2)}</span>
                                 <div class="counts">
-                                    <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                                    <button onclick="updateQuantity('${item.id}', -1)">-</button>
                                     <span>${item.quantity}</span>
-                                    <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                                    <button onclick="updateQuantity('${item.id}', 1)">+</button>
                                 </div>
                             </div>
                             <p class="item-total">Total: $${itemTotal.toFixed(2)}</p>
                         </div>
                         <div class="remove">
-                             <ion-icon name="close-outline" onclick="removeFromCart(${item.id})"></ion-icon>
+                             <ion-icon name="close-outline" onclick="removeFromCart('${item.id}')"></ion-icon>
                         </div>
                     </div>
                 `;
+            } else {
+                const product = allProducts.find(p => p.id === item.id);
+                if (product) {
+                    const priceNumber = parseFloat(product.price.replace(/[^0-9.-]+/g,""));
+                    const itemTotal = priceNumber * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
+
+                    cartPageContainer.innerHTML += `
+                        <div class="cart_card">
+                            <div class="card_img">
+                                <img src="${imagePath}" alt="${product.name}">
+                            </div>
+                            <div class="card_details">
+                                <h3>${product.name}</h3>
+                                <p>Categoría: ${product.category}</p>
+                                <div class="price_control">
+                                    <span class="price">${product.price}</span>
+                                    <div class="counts">
+                                        <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                                        <span>${item.quantity}</span>
+                                        <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                                    </div>
+                                </div>
+                                <p class="item-total">Total: $${itemTotal.toFixed(2)}</p>
+                            </div>
+                            <div class="remove">
+                                 <ion-icon name="close-outline" onclick="removeFromCart(${item.id})"></ion-icon>
+                            </div>
+                        </div>
+                    `;
+                }
             }
         });
         

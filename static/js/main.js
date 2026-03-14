@@ -61,23 +61,4 @@ function viewCart(){
     window.location.href = "cartPage.html"
 }
 
-function setupUI() {
-    let logout = document.getElementById("display_login");
-    let login = document.getElementById("login_btn");
-    let token = localStorage.getItem("email");
-
-    if (token) {
-        logout.style.display = "flex";
-        login.style.display = "none";
-    } else {
-        logout.style.display = "none";
-        login.style.display = "inline-block";
-    }
-}
-
-function logout(){
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-    setupUI();
-}
-setupUI();
+// Eliminadas funciones setupUI y logout (manejadas por backend)

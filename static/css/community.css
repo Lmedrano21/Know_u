@@ -1,0 +1,145 @@
+/* Estilos para la vista de Comunidad (Marketplace de Diseños IA) */
+
+.community-header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    margin-bottom: 40px;
+}
+
+.community-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--black);
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+.community-header p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.community-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    padding-bottom: 80px;
+}
+
+/* Pinterest style masonry grid approach */
+.designs-masonry {
+    column-count: 3;
+    column-gap: 25px;
+}
+
+@media (max-width: 992px) {
+    .designs-masonry { column-count: 2; }
+}
+
+@media (max-width: 576px) {
+    .designs-masonry { column-count: 1; }
+}
+
+.design-item {
+    break-inside: avoid;
+    margin-bottom: 25px;
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #f0f0f0;
+    position: relative;
+    cursor: pointer;
+}
+
+.design-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.design-image {
+    width: 100%;
+    display: block;
+    background: #fafafa;
+    min-height: 200px; /* placeholder incase slow load */
+}
+
+.design-content {
+    padding: 20px;
+}
+
+.design-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.author-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--black);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.author-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.design-prompt {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    /* Truncar texto si es muy largo */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.design-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.design-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--black);
+}
+
+.btn-buy-community {
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+}
+
+.btn-buy-community:hover {
+    background: #333;
+}

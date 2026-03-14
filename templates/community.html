@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Comunidad | Know U{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/community.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="community-header">
+    <h1>Galería de la Comunidad</h1>
+    <p>Explora y compra diseños únicos creados con Inteligencia Artificial por otros miembros de la comunidad Know U.</p>
+</section>
+
+<div class="community-container">
+    {% if designs %}
+        <div class="designs-masonry">
+            {% for design in designs %}
+            <div class="design-item">
+                <img src="{{ design.image_url }}" alt="Diseño por {{ design.user.first_name }}" class="design-image" loading="lazy">
+                
+                <div class="design-content">
+                    <div class="design-author">
+                        <div class="author-avatar">
+                            {{ design.user.first_name[0] | upper }}{{ design.user.last_name[0] | upper if design.user.last_name else '' }}
+                        </div>
+                        <span class="author-name">{{ design.user.first_name }} {{ design.user.last_name or '' }}</span>
+                    </div>
+                    
+                    <p class="design-prompt" title="{{ design.prompt }}">
+                        "{{ design.prompt }}"
+                    </p>
+                    
+                    <div class="design-footer">
+                        <span class="design-price">$35.00</span>
+                        <button class="btn-buy-community" 
+                                data-id="{{ design.id }}" 
+                                data-prompt="{{ design.prompt | e }}" 
+                                data-image="{{ design.image_url }}">
+                            <ion-icon name="cart-outline"></ion-icon> Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 60px 20px; background: #fafafa; border-radius: 12px; border: 1px dashed #ddd;">
+            <ion-icon name="planet-outline" style="font-size: 64px; color: #ccc; margin-bottom: 15px;"></ion-icon>
+            <h2 style="font-size: 1.5rem; color: #555; margin-bottom: 10px;">La comunidad acaba de nacer</h2>
+            <p style="color: #777; margin-bottom: 25px;">Aún no hay diseños públicos. ¡Sé el primero en compartir tu creatividad con el mundo!</p>
+            <a href="{{ url_for('create_studio') }}" class="btn" style="background: purple; color: white; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: 600;">Ir al Estudio IA</a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buyButtons = document.querySelectorAll('.btn-buy-community');
+        buyButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const prompt = this.getAttribute('data-prompt');
+                const img = this.getAttribute('data-image');
+                
+                // Usamos la función global del carrito
+                if(typeof addCustomDesignToCart === 'function') {
+                    addCustomDesignToCart(id, prompt, img, 35.00);
+                } else {
+                    console.error("Función del carrito no encontrada.");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

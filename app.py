@@ -72,6 +72,16 @@ class OrderItem(db.Model):
     price = db.Column(db.Float, nullable=False)
     product = db.relationship('Product')
 
+class GeneratedDesign(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    prompt = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(300), nullable=False)
+    status = db.Column(db.String(50), default='wardrobe') # 'wardrobe', 'published'
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', backref=db.backref('designs', lazy=True))
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -99,6 +109,11 @@ def knowu_chat():
 def products():
     return render_template('products.html')
 
+@app.route('/create')
+@login_required
+def create_studio():
+    return render_template('create.html')
+
 @app.route('/product/<int:product_id>')
 def product_details(product_id):
     # Pasamos el ID al template por si se necesita renderizado híbrido
@@ -117,7 +132,14 @@ def checkout():
 @login_required
 def profile():
     user_orders = Order.query.filter_by(user_id=current_user.id).order_by(Order.date.desc()).all()
-    return render_template('profile.html', orders=user_orders)
+    user_designs = GeneratedDesign.query.filter_by(user_id=current_user.id).order_by(GeneratedDesign.date_created.desc()).all()
+    return render_template('profile.html', orders=user_orders, designs=user_designs)
+
+@app.route('/community')
+def community():
+    # Obtener diseños publicados de todos los usuarios
+    published_designs = GeneratedDesign.query.filter_by(status='published').order_by(GeneratedDesign.date_created.desc()).all()
+    return render_template('community.html', designs=published_designs)
 
 # --- RUTAS DE ADMINISTRACIÓN ---
 
@@ -318,6 +340,77 @@ def api_get_order(order_id):
             'price': f"{item.price:.2f}"
         } for item in order.items]
     })
+
+@app.route('/api/generate_design', methods=['POST'])
+@login_required
+def api_generate_design():
+    data = request.get_json()
+    prompt = data.get('prompt')
+    
+    if not prompt:
+        return jsonify({'success': False, 'message': 'El prompt es requerido'}), 400
+        
+    # --- MOCKUP DE GENERACIÓN CON IA ---
+    # En el futuro aquí se llamará a OpenAI/Midjourney/Stable Diffusion
+    # Por ahora devolvemos una imagen placeholder
+    mock_url = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+    
+    return jsonify({
+        'success': True,
+        'image_url': mock_url,
+        'message': '¡Diseño generado con éxito!'
+    })
+
+@app.route('/api/save_wardrobe', methods=['POST'])
+@login_required
+def api_save_wardrobe():
+    data = request.get_json()
+    prompt = data.get('prompt')
+    image_url = data.get('image_url')
+    
+    if not prompt or not image_url:
+        return jsonify({'success': False, 'message': 'Faltan datos para guardar el diseño'}), 400
+        
+    try:
+        new_design = GeneratedDesign(
+            user_id=current_user.id,
+            prompt=prompt,
+            image_url=image_url,
+            status='wardrobe'
+        )
+        db.session.add(new_design)
+        db.session.commit()
+        
+        return jsonify({'success': True, 'design_id': new_design.id, 'message': 'Guardado en tu armario'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/publish_design', methods=['POST'])
+@login_required
+def api_publish_design():
+    data = request.get_json()
+    design_id = data.get('design_id')
+    
+    if not design_id:
+        return jsonify({'success': False, 'message': 'ID de diseño no proporcionado'}), 400
+        
+    try:
+        design = GeneratedDesign.query.get(design_id)
+        
+        if not design:
+            return jsonify({'success': False, 'message': 'Diseño no encontrado'}), 404
+            
+        if design.user_id != current_user.id:
+            return jsonify({'success': False, 'message': 'No tienes permiso para publicar este diseño'}), 403
+            
+        design.status = 'published'
+        db.session.commit()
+        
+        return jsonify({'success': True, 'message': 'Diseño publicado exitosamente'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 # --- INICIALIZACIÓN Y SEEDER ---
 

@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}KNOW U - Estudio de Creación{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="creation-studio">
+    <!-- Columna Izquierda: Chatbot y Generación -->
+    <div class="studio-chat">
+        <div class="chat-header">
+            <h2>Asistente de Diseño</h2>
+            <p>Describe la prenda que imaginas y la crearé para ti.</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="message-bubble">
+                    ¡Hola! Soy tu asistente creativo. ¿Qué tipo de prenda te gustaría diseñar hoy? Puedes decirme detalles como color, estampado, y estilo.
+                </div>
+            </div>
+            <!-- Ejemplo de prompt predefinido -->
+            <div class="suggestion-chips">
+                <button class="chip" onclick="setPrompt('Una camiseta negra estilo cyberpunk con luces de neón rosa')">Camiseta Cyberpunk</button>
+                <button class="chip" onclick="setPrompt('Un suéter blanco minimalista con un pequeño gato astronauta bordado')">Suéter Minimalista</button>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="promptInput" placeholder="Ej: Una chaqueta de mezclilla con graffitis en la espalda..." autocomplete="off">
+            <button id="generateBtn" onclick="generateDesign()"><ion-icon name="color-wand-outline"></ion-icon> Generar</button>
+        </div>
+    </div>
+
+    <!-- Columna Derecha: Lienzo y Resultados -->
+    <div class="studio-canvas">
+        <div class="canvas-header">
+            <h3>Previsualización</h3>
+            <div class="canvas-actions">
+                <button class="btn-secondary" id="saveWardrobeBtn" disabled><ion-icon name="bookmark-outline"></ion-icon> Guardar en Armario</button>
+                <button class="btn-primary" id="publishBtn" disabled><ion-icon name="earth-outline"></ion-icon> Publicar / Vender</button>
+                <button class="btn-success" id="buyBtn" disabled><ion-icon name="bag-check-outline"></ion-icon> Comprar Ahora</button>
+            </div>
+        </div>
+
+        <div class="canvas-container" id="canvasContainer">
+            <div class="empty-state">
+                <ion-icon name="image-outline"></ion-icon>
+                <p>Tu diseño aparecerá aquí.</p>
+            </div>
+            <!-- Aquí iría la carga de la imagen generada -->
+            <!-- <img src="placeholder" id="generatedImage" style="display: none;"> -->
+            <!-- Aquí iría un loading state -->
+            <div class="loading-state" id="loadingState" style="display: none;">
+                <div class="spinner"></div>
+                <p>Generando tu diseño exclusivo...</p>
+            </div>
+            <!-- Contenedor del mockup generado -->
+            <div class="mockup-result" id="mockupResult" style="display: none;">
+                 <img src="" alt="Diseño Generado" id="generatedImage">
+            </div>
+        </div>
+
+        <!-- Ajustes rápidos post-generación -->
+        <div class="quick-settings" id="quickSettings" style="display: none;">
+            <div class="setting-group">
+                <label>Tipo de Prenda Base:</label>
+                <select id="garmentType">
+                    <option value="tshirt">Camiseta Básica</option>
+                    <option value="hoodie">Sudadera con Capucha</option>
+                    <option value="jacket">Chaqueta</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>Precio Estimado:</label>
+                <span class="estimated-price" id="estimatedPrice">$35.00</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentPrompt = "";
+    let currentImageUrl = "";
+
+    function setPrompt(text) {
+        document.getElementById('promptInput').value = text;
+    }
+
+    async function generateDesign() {
+        const input = document.getElementById('promptInput');
+        const text = input.value.trim();
+        
+        if (!text) return;
+        
+        currentPrompt = text; // Guardar estado para usarlo al guardar
+
+        // Añadir mensaje del usuario al chat
+        const chatMessages = document.getElementById('chatMessages');
+        const userHtml = `
+            <div class="message user-message">
+                <div class="message-bubble">${text}</div>
+            </div>
+        `;
+        chatMessages.insertAdjacentHTML('beforeend', userHtml);
+        
+        // Limpiar input
+        input.value = '';
+        
+        // Mostrar Loading en el Canvas
+        document.querySelector('.empty-state').style.display = 'none';
+        document.getElementById('mockupResult').style.display = 'none';
+        document.getElementById('quickSettings').style.display = 'none';
+        document.getElementById('loadingState').style.display = 'flex';
+        
+        // Scroll al fondo del chat
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Desactivar botones de acción
+        document.getElementById('saveWardrobeBtn').disabled = true;
+        document.getElementById('publishBtn').disabled = true;
+        document.getElementById('buyBtn').disabled = true;
+
+        try {
+            // Llamada real al backend
+            const response = await fetch('/api/generate_design', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: text })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                currentImageUrl = data.image_url;
+                
+                // Respuesta de la IA
+                const aiHtml = `
+                    <div class="message ai-message">
+                        <div class="message-bubble">${data.message} ¿Qué te parece? Puedes pedirme que le cambie colores, que añada elementos, o si te gusta, puedes guardarlo o comprarlo directamente.</div>
+                    </div>
+                `;
+                chatMessages.insertAdjacentHTML('beforeend', aiHtml);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Ocultar Loading y mostrar resultado
+                document.getElementById('loadingState').style.display = 'none';
+                
+                const mockupImg = document.getElementById('generatedImage');
+                mockupImg.src = currentImageUrl;
+                
+                document.getElementById('mockupResult').style.display = 'flex';
+                document.getElementById('quickSettings').style.display = 'flex';
+
+                // Activar botones de acción
+                document.getElementById('saveWardrobeBtn').disabled = false;
+                document.getElementById('publishBtn').disabled = false;
+                document.getElementById('buyBtn').disabled = false;
+            } else {
+                alert("Error generando diseño: " + data.message);
+                document.getElementById('loadingState').style.display = 'none';
+                document.querySelector('.empty-state').style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Error de conexión al generar el diseño.");
+            document.getElementById('loadingState').style.display = 'none';
+            document.querySelector('.empty-state').style.display = 'block';
+        }
+    }
+
+    // Lógica para guardar en armario
+    document.getElementById('saveWardrobeBtn').addEventListener('click', async function() {
+        if (!currentPrompt || !currentImageUrl) return;
+        
+        const btn = this;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<ion-icon name="sync-outline" class="spin"></ion-icon> Guardando...';
+        btn.disabled = true;
+        
+        try {
+            const response = await fetch('/api/save_wardrobe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prompt: currentPrompt,
+                    image_url: currentImageUrl
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                btn.innerHTML = '<ion-icon name="checkmark-outline"></ion-icon> ¡Guardado!';
+                btn.classList.replace('btn-secondary', 'btn-success');
+                // Restaurar botón después de 3 seg de confirmación
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('btn-success', 'btn-secondary');
+                    btn.disabled = false;
+                }, 3000);
+            } else {
+                alert("Error: " + data.message);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Error de conexión al guardar el diseño.");
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    });
+
+    // Permitir enviar con Enter
+    document.getElementById('promptInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            generateDesign();
+        }
+    });
+
+    // Comprar Ahora desde el estudio
+    document.getElementById('buyBtn').addEventListener('click', function() {
+        if (!currentPrompt || !currentImageUrl) return;
+        
+        // Obtener precio base del selector si existe (temporalmente fijo en $35)
+        const basePrice = 35.00; 
+        
+        // Usar timestamp como ID temporal ya que aún no está guardado en BD
+        const tempId = Date.now();
+        
+        addCustomDesignToCart(tempId, currentPrompt, currentImageUrl, basePrice);
+        
+        // Opcional: Abrir el carrito lateral o redirigir
+        const cartSection = document.querySelector('.cart-section');
+        if (cartSection) {
+            cartSection.classList.add('active');
+            renderSideCart();
+        }
+    });
+
+    // Publicar / Vender directo desde el estudio
+    document.getElementById('publishBtn').addEventListener('click', async function() {
+        if (!currentPrompt || !currentImageUrl) return;
+        
+        const btn = this;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<ion-icon name="sync-outline" class="spin"></ion-icon> Publicando...';
+        btn.disabled = true;
+
+        try {
+            // 1. Primero debemos guardarlo en BD si no lo está (ahora lo guardamos forzado para publicarlo)
+            const saveResponse = await fetch('/api/save_wardrobe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: currentPrompt, image_url: currentImageUrl })
+            });
+            const saveData = await saveResponse.json();
+            
+            if(saveData.success) {
+                // 2. Ahora lo publicamos usando el ID generado
+                const publishResponse = await fetch('/api/publish_design', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ design_id: saveData.design_id })
+                });
+                
+                const publishData = await publishResponse.json();
+                if(publishData.success) {
+                    btn.innerHTML = '<ion-icon name="checkmark-outline"></ion-icon> ¡Publicado en la Comunidad!';
+                    btn.classList.replace('btn-secondary', 'btn-success');
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.replace('btn-success', 'btn-secondary');
+                        btn.disabled = false;
+                        window.location.href = '/community'; // Llevamos al usuario a ver la comunidad
+                    }, 2000);
+                } else {
+                    alert("Error al publicar: " + publishData.message);
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } else {
+                alert("Error guardando diseño previo a publicar: " + saveData.message);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        } catch(error) {
+            console.error('Error:', error);
+            alert('Error de conexión al publicar');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    });
+
+</script>
+{% endblock %}

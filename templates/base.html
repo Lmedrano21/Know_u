@@ -1,70 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{% block description %}Descubre las últimas tendencias en moda para mujer y hombre en Know U.{% endblock %}">
+    <meta name="description"
+        content="{% block description %}Descubre las últimas tendencias en moda para mujer y hombre en Know U.{% endblock %}">
     <meta name="author" content="Know U">
     <link rel="icon" href="{{ url_for('static', filename='images/logowhite.png') }}?v=2" type="image/x-icon">
-    
+
     <!-- CSS Global -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=bw3">
     {% block extra_css %}{% endblock %}
-    
+
     <!-- Google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:wght@300;400;500;600;700&family=Rubik:wght@300..900&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:wght@300;400;500;600;700&family=Rubik:wght@300..900&display=swap"
+        rel="stylesheet">
+
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    
+
     <title>{% block title %}Know U{% endblock %}</title>
 </head>
+
 <body class="{% block body_class %}{% endblock %}">
     <header class="container" id="header">
         <div class="header_top">
-              <div class="header_social">
-                <a href="https://www.instagram.com/sa__fashionstyle/" target="_blank"><ion-icon name="logo-instagram"></ion-icon></a>
+            <img src="{{ url_for('static', filename='images/logowhite.png') }}" alt="logo" id="logo">
+            <div class="header_social">
+                <a href="https://www.instagram.com/sa__fashionstyle/" target="_blank"><ion-icon
+                        name="logo-instagram"></ion-icon></a>
                 <a href="https://www.facebook.com/" target="_blank"><ion-icon name="logo-facebook"></ion-icon></a>
                 <a href="https://wa.me/201007738790" target="_blank"><ion-icon name="logo-whatsapp"></ion-icon></a>
-              </div>
-              <img src="{{ url_for('static', filename='images/logowhite.png') }}" alt="logo" id="logo">
-              <div class="header_actions" style="display: flex; align-items: center; gap: 20px; width: auto; position: relative;">
-                <div id="display_login" style="display: {% if current_user.is_authenticated %}flex{% else %}none{% endif %} !important; align-items: center; gap: 15px; position: relative; z-index: 100;">
-                  <a href="{{ url_for('profile') }}" title="Mi Perfil ({{ current_user.first_name }})" style="font-size: 26px; color: inherit; display: flex; align-items: center;">
-                      <ion-icon name="person-outline"></ion-icon>
-                  </a>
-                  {% if current_user.is_authenticated and current_user.is_admin %}
-                  <a href="{{ url_for('admin_dashboard') }}" title="Panel Admin" style="font-size: 26px; color: inherit; display: flex; align-items: center;">
-                    <ion-icon name="settings-outline"></ion-icon>
-                  </a>
-                  {% endif %}
-                  <a href="{{ url_for('logout') }}" id="logout" title="Cerrar Sesión" style="font-size: 26px; color: inherit; display: flex; align-items: center;">
-                   <ion-icon name="log-out-outline"></ion-icon>
-                  </a>
+            </div>
+            <div class="header_actions"
+                style="display: flex; align-items: center; gap: 20px; width: auto; position: relative;">
+                <div id="display_login"
+                    style="display: {% if current_user.is_authenticated %}flex{% else %}none{% endif %} !important; align-items: center; gap: 15px; position: relative; z-index: 100;">
+                    <a href="{{ url_for('profile') }}" title="Mi Perfil ({{ current_user.first_name }})"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </a>
+                    {% if current_user.is_authenticated and current_user.is_admin %}
+                    <a href="{{ url_for('admin_dashboard') }}" title="Panel Admin"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="settings-outline"></ion-icon>
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" id="logout" title="Cerrar Sesión"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </a>
                 </div>
-                
+
                 {% if not current_user.is_authenticated %}
                 <a href="{{ url_for('login') }}" title="Iniciar Sesión" id="login_btn">
-                 <ion-icon name="person-circle-outline"></ion-icon>
+                    <ion-icon name="person-circle-outline"></ion-icon>
                 </a>
                 {% endif %}
-                
+
                 <a href="#" class="icon-cart" style="position: relative; z-index: 50;">
-                  <ion-icon name="cart-outline"></ion-icon>
-                  <span id="cart-counter">0</span>
+                    <ion-icon name="cart-outline"></ion-icon>
+                    <span id="cart-counter">0</span>
                 </a>
-           </div>
+            </div>
         </div>
         <nav>
             <menu>
                 <ul>
-                    <li><a href="{{ url_for('index') }}">Inicio</a></li>
-                    <li><a href="{{ url_for('products') }}">Tienda</a></li>
-                    <li><a href="#">Contacto</a></li>
-                    <li><a href="{{ url_for('knowu_chat') }}"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> Chat</a></li>
+                    <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Inicio</a></li>
+                    <li><a href="{{ url_for('products') }}" class="{% if request.endpoint == 'products' %}active{% endif %}">Tienda</a></li>
+                    <li><a href="{{ url_for('community') }}" class="{% if request.endpoint == 'community' %}active{% endif %}">Comunidad</a></li>
+                    <li><a href="{{ url_for('create_studio') }}" class="{% if request.endpoint == 'create_studio' %}active{% endif %}" style="color: purple; font-weight: bold;"><ion-icon name="sparkles-outline"></ion-icon> Crear</a></li>
+                    <li><a href="{{ url_for('knowu_chat') }}" class="{% if request.endpoint == 'knowu_chat' %}active{% endif %}"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> Chat</a></li>
                 </ul>
             </menu>
         </nav>
@@ -73,13 +85,13 @@
     <!-- Contenido Principal -->
     <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <div class="flash-messages">
+        {% if messages %}
+        <div class="flash-messages">
             {% for category, message in messages %}
-              <div class="alert alert-{{ category }}">{{ message }}</div>
+            <div class="alert alert-{{ category }}">{{ message }}</div>
             {% endfor %}
-            </div>
-          {% endif %}
+        </div>
+        {% endif %}
         {% endwith %}
 
         {% block content %}{% endblock %}
@@ -108,39 +120,40 @@
 
     <footer class="footer {% block footer_class %}{% endblock %}">
         <div class="footer-top">
-           <div class="footer-logo">
-               <img src="{{ url_for('static', filename='images/logo_block.jpg') }}" alt="logo" width="140">
-               <p>El cliente está en el corazón de nuestro modelo de negocio único.</p>
-           </div>
-           <div class="footer-list">
-               <div class="list">
-                   <h4>COMPRAS</h4>
-                   <ul>
-                       <li><a href="#">Tienda de Ropa</a></li>
-                       <li><a href="#">Zapatos en Tendencia</a></li>
-                   </ul>
-               </div>
-               <div class="list">
-                   <h4>Servicio al Cliente</h4>
-                   <ul>
-                       <li><a href="#">Contáctanos</a></li>
-                       <li><a href="#">Envíos y Devoluciones</a></li>
-                   </ul>
-               </div>
-           </div>
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='images/logo_block.jpg') }}" alt="logo" width="140">
+                <p>El cliente está en el corazón de nuestro modelo de negocio único.</p>
+            </div>
+            <div class="footer-list">
+                <div class="list">
+                    <h4>COMPRAS</h4>
+                    <ul>
+                        <li><a href="#">Tienda de Ropa</a></li>
+                        <li><a href="#">Zapatos en Tendencia</a></li>
+                    </ul>
+                </div>
+                <div class="list">
+                    <h4>Servicio al Cliente</h4>
+                    <ul>
+                        <li><a href="#">Contáctanos</a></li>
+                        <li><a href="#">Envíos y Devoluciones</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-       <div class="footer-bottom">
-           <p class="footer-company-name">
-              © 2024 Todos los derechos reservados. Hecho con <ion-icon name="heart"></ion-icon> por Amira Alaa
-           </p>
-       </div>
+        <div class="footer-bottom">
+            <p class="footer-company-name">
+                © 2024 Todos los derechos reservados. Hecho con <ion-icon name="heart"></ion-icon> por Amira Alaa
+            </p>
+        </div>
     </footer>
 
     <button id="scrollBtn"><ion-icon name="arrow-up-outline" id="btn-up"></ion-icon></button>
-    
+
     <!-- Scripts Globales -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>
