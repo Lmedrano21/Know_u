@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}?v=bw4">
 {% endblock %}
+
+{% block body_class %}dark-page{% endblock %}
 
 {% block content %}
         <div class="product-header">

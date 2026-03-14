@@ -536,7 +536,7 @@ body.showCart .cart-section{
 
 /* Small screens */
 @media (max-width: 767px) {
-    main{
+    body:not(.dark-page) main{
         padding: 4%;
     }
     .header_top ion-icon{
@@ -701,4 +701,84 @@ input[type=number]::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+/* ============================================================
+   DARK-PAGE OVERRIDES (homepage only)
+   ============================================================ */
+body.dark-page {
+  background: #ffffff;
+}
+
+body.dark-page .header_top {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+body.dark-page header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+body.dark-page .header_top ion-icon {
+  color: rgba(0, 0, 0, 0.80);
+}
+
+body.dark-page nav {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+body.dark-page nav ul li a {
+  color: rgba(0, 0, 0, 0.75);
+  transition: color 0.25s ease;
+}
+
+body.dark-page nav ul li a:hover {
+  color: #000000;
+}
+
+body.dark-page header nav li::after {
+  background: #000000;
+}
+
+body.dark-page .footer {
+  background: #f0f0f0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  color: #0a0a0a;
+}
+
+body.dark-page .footer-top .footer-logo p,
+body.dark-page .footer-list ul li {
+  color: rgba(0, 0, 0, 0.50);
+}
+
+body.dark-page .footer-list h4 {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+body.dark-page #scrollBtn {
+  background: #0a0a0a;
+  color: #fff;
+}
+body.dark-page #scrollBtn:hover {
+  background: #333333;
+  color: #fff;
+  border: none;
+}
+
+body.dark-page .product-name:hover {
+  color: #333333;
+}
+
+body.dark-page main {
+  background: #ffffff;
 }

@@ -1,183 +1,304 @@
 {% extends "base.html" %}
 
+{% block title %}Know U — Moda que te define{% endblock %}
+{% block description %}Descubre la nueva colección de Know U. Moda premium para mujer y hombre con envío global.{% endblock %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=bw3">
 {% endblock %}
+
+{% block body_class %}dark-page{% endblock %}
 
 {% block content %}
-    <!-- slider -->
-    <div class="slider">
-        <div class="slides">
-            <div class="slide">
-                <div class="slide-content">
-                   <img src="{{ url_for('static', filename='images/background/slide16_bdfdea89-9df3-48da-9f0a-888fd50a83d5.webp') }}">
-                   <div class="text">
-                    <h2>Obtén hasta un 30% de descuento en novedades</h2>
-                    <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
-                   </div>
-                </div>
-                <div class="slide-content">
-                    <img src="{{ url_for('static', filename='images/background/background2.webp') }}">
-                    <div class="text">
-                     <h2>Obtén hasta un 30% de descuento en novedades</h2>
-                     <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
-                    </div>
-                 </div>
-                 <div class="slide-content">
-                    <img src="{{ url_for('static', filename='images/background/background3.webp') }}">
-                    <div class="text">
-                     <h2>Obtén hasta un 30% de descuento en novedades</h2>
-                     <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
-                    </div>
-                 </div>
-            </div>
-        </div>
-        <div class="navigation">
-            <button class="prev" onclick="prevSlider();">
-                <ion-icon name="arrow-back-outline"></ion-icon>
-            </button>
-            <button class="next" onclick="nextSlider();">
-                <ion-icon name="arrow-forward-outline"></ion-icon>
-            </button>
-        </div>
-    </div>
-    <div class="hero_for_phone">
-        <div class="hero-content">
-            <img src="{{ url_for('static', filename='images/background/phone.webp') }}">
-            <div class="text">
-             <h2>Mini Colección</h2>
-             <p>Colorea el verano en fucsia intenso, rosa chicle</p>
-             <a href="{{ url_for('products') }}" class="shop-btn">Compra ahora</a>
-            </div>
-         </div>
+
+<!-- ===============================================================
+     HERO FULLSCREEN
+     =============================================================== -->
+<section class="hero-fullscreen" id="hero">
+
+  <!-- Animated gradient blobs -->
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+
+  <!-- Particle canvas -->
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- Hero text -->
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Nueva Colección 2025
     </div>
 
-    <!-- info -->
-    <div class="information">
-        <div class="info">
-            <div class="info-icon">
-                <img src="{{ url_for('static', filename='images/global-distribution.png') }}" alt="global-distribution" >
-            </div>
-            <div class="info-text">
-                <h3>Envío a todo el mundo</h3>
-                <p> Envío gratis en todos los pedidos de EE. UU. o superiores a $100</p>
-            </div>
-        </div>
-        <div class="info">
-            <div class="info-icon">
-                <img src="{{ url_for('static', filename='images/delivery-status.png') }}" alt="delivery-status" >
-            </div>
-            <div class="info-text">
-                <h3>Devolución en 14 días</h3>
-                <p>Simplemente devuélvelo dentro de 30 días para un cambio.</p>
-            </div>
-        </div>
-        <div class="info">
-            <div class="info-icon">
-                <img src="{{ url_for('static', filename='images/check.png') }}" alt="Security" >
-            </div>
-            <div class="info-text">
-                <h3>Pago Seguro</h3>
-                <p>Garantizamos pago seguro con PEV</p>
-            </div>
-        </div>
-        <div class="info">
-            <div class="info-icon">
-                <img src="{{ url_for('static', filename='images/24-hours-support.png') }}" alt="24-hours-support" >
-            </div>
-            <div class="info-text">
-                <h3>Soporte 24/7</h3>
-                <p>Contáctanos las 24 horas del día, los 7 días de la semana</p>
-            </div>
-        </div>
+    <h1 class="hero-title">
+      Moda que te<br>
+      <span class="gradient-word" id="typewriter-target">define</span><span class="cursor"></span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Descubre piezas exclusivas diseñadas para cada momento de tu vida. Estilo sin compromiso.
+    </p>
+
+    <div class="hero-actions">
+      <a href="{{ url_for('products') }}" class="btn-primary">
+        <span>Explorar Colección</span>
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </a>
+      <a href="{{ url_for('knowu_chat') }}" class="btn-glass">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        <span>Habla con Know U</span>
+      </a>
     </div>
-    <!-- Top Products -->
-    <div class="top_products">
-        <div class="container">
-            <div class="header">
-                <h3>Productos en Tendencia</h3>
-                <p>Sigue las tendencias más populares y obtén artículos exclusivos de Know U.</p>
-            </div>
-            <div class="products">
-              <!-- add by js -->
-            </div>
-        </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ===============================================================
+     INFO BAR
+     =============================================================== -->
+<div class="information reveal">
+  <div class="info">
+    <div class="info-icon">
+      <img src="{{ url_for('static', filename='images/global-distribution.png') }}" alt="Envío global">
     </div>
-    <!-- collection -->
-    <div class="collection" id="collection" aria-label="collection" data-section>
-        <div class="container">
-          <ul class="collection-list">
-            <li>
-              <div class="collection-card has-before hover:shine">
-
-                <h2 class="card-title">Colección de Verano</h2>
-
-                <p class="card-text">Desde $17.99</p>
-
-                <a href="{{ url_for('products') }}" class="btn-link">
-                  <span>Compra ahora</span>
-
-                  <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
-                </a>
-
-                <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner1.webp') }}')"></div>
-                </div>
-            </li>
-
-            <li>
-              <div class="collection-card has-before hover:shine">
-
-                <h2 class="card-title">¿Qué hay de nuevo?</h2>
-
-                <p class="card-text">Consigue el brillo</p>
-
-                <a href="#" class="btn-link">
-                  <span>Descubre ahora</span>
-
-                  <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
-                </a>
-
-                <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner2.webp') }}')"></div>
-              </div>
-            </li>
-
-            <li>
-              <div class="collection-card has-before hover:shine">
-
-                <h2 class="card-title">Compra 1 y Llévate 1</h2>
-
-                <p class="card-text">Desde $7.99</p>
-
-                <a href="#" class="btn-link">
-                  <span>Descubre ahora</span>
-                  <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
-                </a>
-
-                <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner3.webp') }}')"></div>
-
-              </div>
-            </li>
-
-          </ul>
-        </div>
+    <div class="info-text">
+      <h3>Envío a todo el mundo</h3>
+      <p>Gratis en pedidos superiores a $100 USD</p>
     </div>
-    <!-- news -->
-    <div class="news hight">
-        <div class="news-text">
-            <h4>Boletín</h4>
-            <p>
-                Suscríbete a nuestro boletín y obtén un 20% de descuento en tu primera compra
-            </p>
-        </div>
-        <div class="Subscribe-form">
-            <input type="email" name="email" placeholder="Ingresa tu correo electrónico" autocomplete="off">
-            <button type="submit" value="submit">
-                <img src="{{ url_for('static', filename='images/send.png') }}" alt="send-data" width="30"/>
-            </button>
-        </div>
+  </div>
+  <div class="info">
+    <div class="info-icon">
+      <img src="{{ url_for('static', filename='images/delivery-status.png') }}" alt="Devoluciones">
     </div>
+    <div class="info-text">
+      <h3>Devolución en 30 días</h3>
+      <p>Devuelve sin preguntas dentro de 30 días</p>
+    </div>
+  </div>
+  <div class="info">
+    <div class="info-icon">
+      <img src="{{ url_for('static', filename='images/check.png') }}" alt="Pago seguro">
+    </div>
+    <div class="info-text">
+      <h3>Pago 100% Seguro</h3>
+      <p>Transacciones cifradas con PEV</p>
+    </div>
+  </div>
+  <div class="info">
+    <div class="info-icon">
+      <img src="{{ url_for('static', filename='images/24-hours-support.png') }}" alt="Soporte">
+    </div>
+    <div class="info-text">
+      <h3>Soporte 24/7</h3>
+      <p>Estamos disponibles a cualquier hora</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================================
+     TRENDING PRODUCTS
+     =============================================================== -->
+<div class="top_products">
+  <div class="container">
+    <div class="header reveal">
+      <span class="section-label">Lo más popular</span>
+      <h3>Productos en Tendencia</h3>
+      <p>Sigue las tendencias más populares y obtén artículos exclusivos de Know U.</p>
+    </div>
+    <div class="products">
+      <!-- Filled dynamically by index.js -->
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================================
+     COLLECTIONS
+     =============================================================== -->
+<div class="collection" id="collection" aria-label="collection">
+  <div class="section-header reveal">
+    <span class="section-label">Colecciones</span>
+    <h2>Elige tu estilo</h2>
+  </div>
+  <div class="container">
+    <ul class="collection-list">
+
+      <li class="reveal">
+        <div class="collection-card has-before hover:shine">
+          <h2 class="card-title">Colección de Verano</h2>
+          <p class="card-text">Desde $17.99</p>
+          <a href="{{ url_for('products') }}" class="btn-link">
+            <span>Compra ahora</span>
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </a>
+          <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner1.webp') }}')"></div>
+        </div>
+      </li>
+
+      <li class="reveal">
+        <div class="collection-card has-before hover:shine">
+          <h2 class="card-title">¿Qué hay de nuevo?</h2>
+          <p class="card-text">Consigue el brillo</p>
+          <a href="{{ url_for('products') }}" class="btn-link">
+            <span>Descubre ahora</span>
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </a>
+          <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner2.webp') }}')"></div>
+        </div>
+      </li>
+
+      <li class="reveal">
+        <div class="collection-card has-before hover:shine">
+          <h2 class="card-title">Compra 1 y Llévate 1</h2>
+          <p class="card-text">Desde $7.99</p>
+          <a href="{{ url_for('products') }}" class="btn-link">
+            <span>Descubre ahora</span>
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </a>
+          <div class="has-bg-image" style="background-image: url('{{ url_for('static', filename='images/background/banner3.webp') }}')"></div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+<!-- ===============================================================
+     NEWSLETTER BANNER
+     =============================================================== -->
+<div class="news hight reveal">
+  <div class="news-text">
+    <h4>Únete al club Know U</h4>
+    <p>Suscríbete a nuestro boletín y obtén un 20% de descuento en tu primera compra</p>
+  </div>
+  <div class="Subscribe-form">
+    <input type="email" name="email" placeholder="tu@correo.com" autocomplete="off">
+    <button type="submit">
+      <img src="{{ url_for('static', filename='images/send.png') }}" alt="Enviar" width="22"/>
+    </button>
+  </div>
+</div>
+
 {% endblock %}
+
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+/* ================================================================
+   PARTICLE HERO
+   ================================================================ */
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  const PARTICLE_COUNT = 90;
+  const COLORS = ['rgba(0,0,0,', 'rgba(40,40,40,', 'rgba(80,80,80,', 'rgba(20,20,20,'];
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function Particle() {
+    this.reset();
+  }
+  Particle.prototype.reset = function() {
+    this.x    = Math.random() * W;
+    this.y    = Math.random() * H;
+    this.r    = Math.random() * 2 + 0.5;
+    this.vx   = (Math.random() - 0.5) * 0.4;
+    this.vy   = (Math.random() - 0.5) * 0.4;
+    this.base = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.alpha = Math.random() * 0.5 + 0.1;
+  };
+
+  function init() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < -10) p.x = W + 10;
+      if (p.x > W + 10) p.x = -10;
+      if (p.y < -10) p.y = H + 10;
+      if (p.y > H + 10) p.y = -10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.base + p.alpha + ')';
+      ctx.fill();
+    });
+
+    // Draw connecting lines
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(0,0,0,' + (0.08 * (1 - dist / 120)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize(); init(); draw();
+})();
+
+/* ================================================================
+   TYPEWRITER EFFECT
+   ================================================================ */
+(function() {
+  const el = document.getElementById('typewriter-target');
+  if (!el) return;
+  const words = ['define', 'inspira', 'eleva', 'distingue'];
+  let wi = 0, ci = 0, deleting = false;
+
+  function tick() {
+    const word = words[wi];
+    if (!deleting) {
+      el.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { deleting = true; return setTimeout(tick, 2000); }
+    } else {
+      el.textContent = word.slice(0, --ci);
+      if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; return setTimeout(tick, 400); }
+    }
+    setTimeout(tick, deleting ? 60 : 100);
+  }
+  setTimeout(tick, 1200);
+})();
+
+/* ================================================================
+   SCROLL REVEAL
+   ================================================================ */
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+})();
+</script>
 {% endblock %}

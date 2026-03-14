@@ -111,6 +111,7 @@ input[type=number]::-webkit-inner-spin-button {
 
 /* Firefox */
 input[type=number] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 #btn_add{
@@ -151,7 +152,7 @@ input[type=number] {
 }
 .success-msg ion-icon{
     font-size: 48px;
-    color: green;
+    color: #000;
     margin-bottom: 24px;
 
 }

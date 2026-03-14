@@ -8,7 +8,7 @@
     <link rel="icon" href="{{ url_for('static', filename='images/logowhite.png') }}?v=2" type="image/x-icon">
     
     <!-- CSS Global -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=bw3">
     {% block extra_css %}{% endblock %}
     
     <!-- Google font -->
@@ -64,6 +64,7 @@
                     <li><a href="{{ url_for('index') }}">Inicio</a></li>
                     <li><a href="{{ url_for('products') }}">Tienda</a></li>
                     <li><a href="#">Contacto</a></li>
+                    <li><a href="{{ url_for('knowu_chat') }}"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> Chat</a></li>
                 </ul>
             </menu>
         </nav>
