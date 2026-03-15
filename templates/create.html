@@ -111,31 +111,52 @@
         // Limpiar input
         input.value = '';
         
-        // Mostrar Loading en el Canvas
+        // Ocultar placeholders y mostrar estado de carga interactivo
         document.querySelector('.empty-state').style.display = 'none';
         document.getElementById('mockupResult').style.display = 'none';
         document.getElementById('quickSettings').style.display = 'none';
-        document.getElementById('loadingState').style.display = 'flex';
         
+        const loadingState = document.getElementById('loadingState');
+        loadingState.style.display = 'flex';
+        loadingState.classList.add('active'); // Activa la capa de gradiente mágico en CSS
+        
+        // Elemento DOM p para actualizar los mensajes del spinner
+        const loadingText = loadingState.querySelector('p');
+
         // Scroll al fondo del chat
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
-        // Desactivar botones de acción
+        // Desactivar botones de acción y submit
+        document.getElementById('generateBtn').disabled = true;
         document.getElementById('saveWardrobeBtn').disabled = true;
         document.getElementById('publishBtn').disabled = true;
         document.getElementById('buyBtn').disabled = true;
 
         try {
-            // Llamada real al backend
+            // Lógica asíncrona inmersiva para simular *Thinking Time*
+            loadingText.innerText = "Analizando silueta base de la prenda...";
+            await new Promise(r => setTimeout(r, 1200));
+            
+            loadingText.innerText = "Calculando densidad de píxeles y colorimetría...";
+            await new Promise(r => setTimeout(r, 1500));
+            
+            loadingText.innerText = "Renderizando volúmenes 3D y texturas de tejido...";
+            await new Promise(r => setTimeout(r, 1500));
+
+            // Llamada real al backend falso
+            loadingText.innerText = "Alineando hiperparámetros y finalizando Mockup...";
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const response = await fetch('/api/generate_design', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
                 },
                 body: JSON.stringify({ prompt: text })
             });
             
             const data = await response.json();
+            await new Promise(r => setTimeout(r, 500)); // Respiro post-fetch
             
             if (data.success) {
                 currentImageUrl = data.image_url;
@@ -143,14 +164,15 @@
                 // Respuesta de la IA
                 const aiHtml = `
                     <div class="message ai-message">
-                        <div class="message-bubble">${data.message} ¿Qué te parece? Puedes pedirme que le cambie colores, que añada elementos, o si te gusta, puedes guardarlo o comprarlo directamente.</div>
+                        <div class="message-bubble">${data.message} ¡Qué buen gusto! Ya proyecté el visualizador interactivo a la derecha. Puedes guardarlo en tu armario o mandarlo directo a fabricación si está perfecto.</div>
                     </div>
                 `;
                 chatMessages.insertAdjacentHTML('beforeend', aiHtml);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
-                // Ocultar Loading y mostrar resultado
-                document.getElementById('loadingState').style.display = 'none';
+                // Ocultar Loading inmersivo y mostrar Mockup
+                loadingState.style.display = 'none';
+                loadingState.classList.remove('active');
                 
                 const mockupImg = document.getElementById('generatedImage');
                 mockupImg.src = currentImageUrl;
@@ -159,19 +181,24 @@
                 document.getElementById('quickSettings').style.display = 'flex';
 
                 // Activar botones de acción
+                document.getElementById('generateBtn').disabled = false;
                 document.getElementById('saveWardrobeBtn').disabled = false;
                 document.getElementById('publishBtn').disabled = false;
                 document.getElementById('buyBtn').disabled = false;
             } else {
                 alert("Error generando diseño: " + data.message);
-                document.getElementById('loadingState').style.display = 'none';
+                loadingState.style.display = 'none';
+                loadingState.classList.remove('active');
                 document.querySelector('.empty-state').style.display = 'block';
+                document.getElementById('generateBtn').disabled = false;
             }
         } catch (error) {
             console.error('Error:', error);
-            alert("Error de conexión al generar el diseño.");
-            document.getElementById('loadingState').style.display = 'none';
+            alert("Error de renderizado cognitivo. Revisa tu conexión a internet.");
+            loadingState.style.display = 'none';
+            loadingState.classList.remove('active');
             document.querySelector('.empty-state').style.display = 'block';
+            document.getElementById('generateBtn').disabled = false;
         }
     }
 
@@ -185,10 +212,12 @@
         btn.disabled = true;
         
         try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const response = await fetch('/api/save_wardrobe', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
                 },
                 body: JSON.stringify({
                     prompt: currentPrompt,
@@ -258,9 +287,13 @@
 
         try {
             // 1. Primero debemos guardarlo en BD si no lo está (ahora lo guardamos forzado para publicarlo)
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const saveResponse = await fetch('/api/save_wardrobe', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
                 body: JSON.stringify({ prompt: currentPrompt, image_url: currentImageUrl })
             });
             const saveData = await saveResponse.json();
@@ -269,7 +302,10 @@
                 // 2. Ahora lo publicamos usando el ID generado
                 const publishResponse = await fetch('/api/publish_design', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken // Reusing the token retrieved above
+                    },
                     body: JSON.stringify({ design_id: saveData.design_id })
                 });
                 

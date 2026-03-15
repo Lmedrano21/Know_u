@@ -10,7 +10,8 @@
     <section id="login">
        <div class="container">
         <h1 class="section-header">Iniciar Sesión</h1>
-        <form id="form" method="POST" action="{{ url_for('login') }}">
+        <form id="form" method="POST" action="{{ url_for('auth.login') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label for="email">Correo Electrónico</label>
             <input type="text" name="email" placeholder="Correo Electrónico" id="email" onblur="validationEmail();">
             <span id="invalidEmail" class="alert">Correo no válido</span>
@@ -20,7 +21,7 @@
 
             <div class="submit">
                 <button type="submit" id="btn-login">Ingresar</button> 
-                <a href="{{ url_for('signup') }}" id="signup">¿Nuevo cliente? Regístrate</a>
+                <a href="{{ url_for('auth.signup') }}" id="signup">¿Nuevo cliente? Regístrate</a>
             </div>  
         </form>
        </div>

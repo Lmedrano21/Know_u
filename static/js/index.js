@@ -7,7 +7,7 @@ window.addEventListener("load",function(){
         playSlider();
     }
     }
-    getTrendingProducts();
+    getProducts();
 });
 
 function nextSlider() {
@@ -64,11 +64,15 @@ function playSlider() {
     }, 3000);
 }
 
-async function getTrendingProducts() {
-    let response = await fetch('json/products.json');
-    let products = await response.json();
-    let trendingProducts = products.filter(product => product.isTrending);
-    displayTrendingProducts(trendingProducts);
+async function getProducts() {
+    try {
+        let response = await fetch('/api/products');
+        let products = await response.json();
+        let trendingProducts = products.filter(product => product.isTrending);
+        displayTrendingProducts(trendingProducts);
+    } catch (error) {
+        console.error('Error al cargar productos:', error);
+    }
 }
 function displayTrendingProducts(trendingProducts){
     let content = ``;
@@ -107,5 +111,5 @@ function showCart(){
     body.classList.add('showCart');
 }
 function displayDetails(productId){
-    window.location.href = `ProductDetails.html?productId=${productId}`;
+    window.location.href = `/product/${productId}`;
 }

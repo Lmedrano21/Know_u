@@ -1,0 +1,82 @@
+{% extends "admin_base.html" %}
+
+{% block admin_content %}
+<div class="admin-topbar">
+    <div class="admin-title">
+        <h1>Detalle del Pedido #{{ order.id }}</h1>
+        <p>Revisa qué artículos ordenó exactamente el cliente.</p>
+    </div>
+    <a href="{{ url_for('admin.admin_orders') }}" class="btn-primary-admin" style="background:#fff; color:var(--black); border:1px solid #ddd;">
+        <ion-icon name="arrow-back-outline"></ion-icon> Volver
+    </a>
+</div>
+
+<div class="admin-card" style="display: flex; gap: 40px; flex-wrap: wrap;">
+    
+    <!-- Info del Pedido -->
+    <div style="flex: 1 1 300px;">
+        <h3 style="margin-bottom: 20px; font-weight: 700; font-size: 1.2rem;">Información General</h3>
+        <p><strong>Cliente:</strong> {{ order.user.first_name }} {{ order.user.last_name or '' }} ({{ order.user.email }})</p>
+        <p><strong>Fecha:</strong> {{ order.date.strftime('%d %b %Y, %H:%M') }}</p>
+        <p><strong>Total Facturado:</strong> <span style="font-weight: 700; color: #2e7d32; font-size: 1.2rem;">${{ "%.2f"|format(order.total_price) }}</span></p>
+        
+        <h3 style="margin-top: 30px; margin-bottom: 20px; font-weight: 700; font-size: 1.2rem;">Estado del Envío</h3>
+        <form action="{{ url_for('admin.admin_update_order_status', order_id=order.id) }}" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <select name="status" class="admin-input">
+                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pendiente de Producción</option>
+                <option value="paid" {% if order.status == 'paid' %}selected{% endif %}>Pagado / Produciendo</option>
+                <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>Enviado</option>
+            </select>
+            <button type="submit" class="btn-primary-admin" style="width: 100%; justify-content: center;">
+                Guardar Estado
+            </button>
+        </form>
+    </div>
+
+    <!-- Artículos del Pedido -->
+    <div style="flex: 2 1 500px;">
+        <h3 style="margin-bottom: 20px; font-weight: 700; font-size: 1.2rem;">Artículos Comprados ({{ order.items|length }})</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            {% for item in order.items %}
+            <div style="display: flex; align-items: center; gap: 20px; padding: 15px; border: 1px solid #eaeaea; border-radius: 12px; background: #fafafa;">
+                
+                {% if item.design_id and item.design %}
+                    <!-- Render Diseño IA -->
+                    <img src="{{ item.design.image_url }}" alt="Diseño IA" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                    <div style="flex-grow: 1;">
+                        <span class="badge" style="background: purple; color: white; display: inline-block; margin-bottom: 5px;">Diseño Personalizado IA #{{ item.design.id }}</span>
+                        <h4 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 5px;">Prenda con Diseño de: {{ item.design.user.first_name }}</h4>
+                        <p style="font-size: 0.85rem; color: #666; font-style: italic; margin-bottom: 10px;">"{{ item.design.prompt }}"</p>
+                        <p><strong>Ctd:</strong> {{ item.quantity }} x ${{ "%.2f"|format(item.price) }}</p>
+                    </div>
+                {% elif item.product_id and item.product %}
+                    <!-- Render Producto Normal -->
+                    {% if item.product.images %}
+                        <img src="{{ url_for('static', filename=item.product.images[0].image_url|replace('/static/', '')) if item.product.images[0].image_url.startswith('/static/') else item.product.images[0].image_url }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
+                    {% else %}
+                        <div style="width: 100px; height: 100px; background: #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #999;"><ion-icon name="image-outline" style="font-size: 24px;"></ion-icon></div>
+                    {% endif %}
+                    <div style="flex-grow: 1;">
+                        <span class="badge badge-category" style="display: inline-block; margin-bottom: 5px;">Ropa Regular #{{ item.product.id }}</span>
+                        <h4 style="font-weight: 600; font-size: 1.1rem; margin-bottom: 5px;">{{ item.product.name }}</h4>
+                        <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">Categoría: {{ item.product.category }}</p>
+                        <p><strong>Ctd:</strong> {{ item.quantity }} x ${{ "%.2f"|format(item.price) }}</p>
+                    </div>
+                {% endif %}
+                
+                <div style="text-align: right; font-weight: 800; font-size: 1.1rem; color: var(--black);">
+                    ${{ "%.2f"|format(item.price * item.quantity) }}
+                </div>
+            </div>
+            {% endfor %}
+            
+            <div style="text-align: right; padding: 20px; border-top: 2px dashed #ddd; margin-top: 10px;">
+                <p style="color: #666; margin-bottom: 5px;">Envío Estándar: $70.00</p>
+                <p style="font-size: 1.5rem; font-weight: 800;">TOTAL: ${{ "%.2f"|format(order.total_price) }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -254,7 +254,9 @@
     align-items: center;
     position: relative;
     padding: 40px;
-    background: radial-gradient(circle, #fcfcfc 0%, #f0f0f0 100%);
+    background: radial-gradient(circle, #fdfdfd 0%, #f4f4f4 100%);
+    transition: background 0.5s ease;
+    overflow: hidden; /* Para las animaciones de fondo */
 }
 
 .empty-state {
@@ -273,17 +275,56 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 20px;
     color: var(--black);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.loading-state.active {
+    opacity: 1;
+    pointer-events: all;
+    background: linear-gradient(135deg, rgba(240,240,255,0.8), rgba(255,240,245,0.8));
+    animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.loading-state p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #444;
+    letter-spacing: 0.5px;
+    animation: textPulse 1.5s infinite alternate;
+}
+
+@keyframes textPulse {
+    from { opacity: 0.7; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1.02); }
 }
 
 .spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(0,0,0,0.1);
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(0,0,0,0.05);
     border-radius: 50%;
     border-top-color: var(--black);
-    animation: spin 1s ease-in-out infinite;
+    border-bottom-color: var(--black);
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
 }
 
 @keyframes spin {

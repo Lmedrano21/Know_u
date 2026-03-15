@@ -1,0 +1,53 @@
+{% extends "admin_base.html" %}
+
+{% block admin_content %}
+<div class="admin-topbar">
+    <div class="admin-title">
+        <h1>Gestión de Usuarios</h1>
+        <p>Visualiza y administra todos los clientes registrados en Know U.</p>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>#{{ user.id }}</td>
+                    <td class="product-name-bold">{{ user.first_name }} {{ user.last_name or '' }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        {% if user.is_admin %}
+                        <span class="badge" style="background: purple; color: white;">Administrador</span>
+                        {% else %}
+                        <span class="badge badge-category">Cliente</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            {% if not user.is_admin %}
+                            <a href="{{ url_for('admin.admin_delete_user', user_id=user.id) }}" class="btn-icon delete" title="Eliminar cuenta" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario y todos sus datos? Esta acción es irreversible.');">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </a>
+                            {% else %}
+                            <span style="color: #999; font-size: 0.8rem;">Ninguna</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

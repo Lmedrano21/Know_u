@@ -1,0 +1,466 @@
+{% extends "base.html" %}
+
+{% block title %}Ajustes de Cuenta - Know U{% endblock %}
+
+{% block body_class %}dark-page{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ── Settings Page ─────────────────────────────── */
+    .settings-wrapper {
+        max-width: 720px;
+        margin: 130px auto 80px;
+        padding: 0 24px;
+    }
+
+    .settings-page-header {
+        margin-bottom: 40px;
+    }
+
+    .settings-page-header h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        margin: 0 0 6px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .settings-page-header p {
+        color: #888;
+        font-size: 0.95rem;
+    }
+
+    /* ── Toast Notifications ─── */
+    .settings-toast {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 28px;
+        animation: fadeSlideIn 0.3s ease;
+    }
+
+    .settings-toast.success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+    }
+
+    .settings-toast.error {
+        background: #fdecea;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+    }
+
+    @keyframes fadeSlideIn {
+        from { opacity: 0; transform: translateY(-8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Card Sections ─── */
+    .settings-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 20px;
+        padding: 36px 40px;
+        margin-bottom: 28px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+        transition: box-shadow 0.2s ease;
+    }
+
+    .settings-card:hover {
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    }
+
+    .settings-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .settings-card-icon {
+        width: 46px;
+        height: 46px;
+        background: #f5f5f5;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: #333;
+        flex-shrink: 0;
+    }
+
+    .settings-card-header h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin: 0 0 2px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .settings-card-header span {
+        font-size: 0.82rem;
+        color: #aaa;
+    }
+
+    /* ── Form Inputs ─── */
+    .settings-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .settings-form-grid.single {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .settings-field label {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .settings-field input {
+        padding: 13px 16px;
+        border: 1.5px solid #e5e5e5;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-family: 'Poppins', sans-serif;
+        color: #222;
+        background: #fafafa;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .settings-field input:focus {
+        border-color: #333;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+    }
+
+    .settings-field input:disabled {
+        background: #f5f5f5;
+        color: #aaa;
+        cursor: not-allowed;
+    }
+
+    /* ── Save Button ─── */
+    .settings-actions {
+        margin-top: 24px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-settings-save {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 28px;
+        background: #111;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.92rem;
+        font-weight: 600;
+        font-family: 'Poppins', sans-serif;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-settings-save:hover {
+        background: #333;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+        transform: translateY(-1px);
+    }
+
+    .btn-settings-save:active {
+        transform: translateY(0);
+    }
+
+    /* ── Password Strength Meter ─── */
+    .strength-bar-wrap {
+        height: 4px;
+        background: #eee;
+        border-radius: 4px;
+        margin-top: 6px;
+        overflow: hidden;
+    }
+
+    .strength-bar {
+        height: 100%;
+        width: 0%;
+        border-radius: 4px;
+        transition: width 0.35s ease, background 0.35s ease;
+    }
+
+    .strength-label {
+        font-size: 0.76rem;
+        color: #aaa;
+        margin-top: 4px;
+    }
+
+    /* ── Breadcrumb ─── */
+    .settings-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        color: #aaa;
+    }
+
+    .settings-breadcrumb a {
+        color: #aaa;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .settings-breadcrumb a:hover { color: #333; }
+    .settings-breadcrumb span { color: #333; font-weight: 600; }
+
+    @media (max-width: 600px) {
+        .settings-form-grid { grid-template-columns: 1fr; }
+        .settings-card { padding: 24px 20px; }
+        .settings-wrapper { margin-top: 100px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="settings-wrapper">
+
+    <!-- Breadcrumb -->
+    <nav class="settings-breadcrumb">
+        <a href="{{ url_for('user.profile') }}">Mi Perfil</a>
+        <ion-icon name="chevron-forward-outline" style="font-size:14px;"></ion-icon>
+        <span>Ajustes de Cuenta</span>
+    </nav>
+
+    <!-- Page Title -->
+    <div class="settings-page-header">
+        <h1>Ajustes ✦</h1>
+        <p>Administra tu información personal y la seguridad de tu cuenta.</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    {% if success_msg %}
+    <div class="settings-toast success">
+        <ion-icon name="checkmark-circle-outline" style="font-size:20px;"></ion-icon>
+        {{ success_msg }}
+    </div>
+    {% elif error_msg %}
+    <div class="settings-toast error">
+        <ion-icon name="alert-circle-outline" style="font-size:20px;"></ion-icon>
+        {{ error_msg }}
+    </div>
+    {% endif %}
+
+    <!-- ── Card 1: Datos Personales ─────────────────── -->
+    <div class="settings-card">
+        <div class="settings-card-header">
+            <div class="settings-card-icon">
+                <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <div>
+                <h2>Información Personal</h2>
+                <span>Tu nombre y correo electrónico</span>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('user.settings') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="update_profile">
+
+            <div class="settings-form-grid">
+                <div class="settings-field">
+                    <label>Nombre</label>
+                    <input
+                        type="text"
+                        name="first_name"
+                        id="first_name"
+                        value="{{ current_user.first_name or '' }}"
+                        placeholder="Tu nombre"
+                        required
+                    >
+                </div>
+                <div class="settings-field">
+                    <label>Apellido</label>
+                    <input
+                        type="text"
+                        name="last_name"
+                        id="last_name"
+                        value="{{ current_user.last_name or '' }}"
+                        placeholder="Tu apellido"
+                    >
+                </div>
+                <div class="settings-field" style="grid-column: 1 / -1;">
+                    <label>Correo Electrónico</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        value="{{ current_user.email }}"
+                        placeholder="tu@correo.com"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="settings-actions">
+                <button type="submit" class="btn-settings-save">
+                    <ion-icon name="save-outline"></ion-icon>
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ── Card 2: Cambio de Contraseña ─────────────── -->
+    <div class="settings-card">
+        <div class="settings-card-header">
+            <div class="settings-card-icon">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+            </div>
+            <div>
+                <h2>Cambiar Contraseña</h2>
+                <span>Usa al menos 8 caracteres con números y letras</span>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('user.settings') }}" id="passwordForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="change_password">
+
+            <div class="settings-form-grid single">
+                <div class="settings-field">
+                    <label>Contraseña Actual</label>
+                    <input
+                        type="password"
+                        name="current_password"
+                        id="current_password"
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+                <div class="settings-field">
+                    <label>Nueva Contraseña</label>
+                    <input
+                        type="password"
+                        name="new_password"
+                        id="new_password"
+                        placeholder="Mínimo 8 caracteres"
+                        oninput="updateStrength(this.value)"
+                        required
+                    >
+                    <div class="strength-bar-wrap">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <span class="strength-label" id="strengthLabel">Escribe tu nueva contraseña</span>
+                </div>
+                <div class="settings-field">
+                    <label>Confirmar Nueva Contraseña</label>
+                    <input
+                        type="password"
+                        name="confirm_password"
+                        id="confirm_password"
+                        placeholder="Repite la contraseña"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="settings-actions">
+                <button type="submit" class="btn-settings-save">
+                    <ion-icon name="key-outline"></ion-icon>
+                    Actualizar Contraseña
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ── Card 3: Zona de Peligro ─────────────────── -->
+    <div class="settings-card" style="border-color: #ffe0e0;">
+        <div class="settings-card-header">
+            <div class="settings-card-icon" style="background:#fff0f0; color:#c62828;">
+                <ion-icon name="log-out-outline"></ion-icon>
+            </div>
+            <div>
+                <h2 style="color:#c62828;">Cerrar Sesión</h2>
+                <span>Desconéctate de tu cuenta en este dispositivo.</span>
+            </div>
+        </div>
+        <div class="settings-actions" style="justify-content: flex-start;">
+            <a href="{{ url_for('auth.logout') }}" class="btn-settings-save" style="background:#c62828; text-decoration:none;">
+                <ion-icon name="log-out-outline"></ion-icon>
+                Cerrar Sesión
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // ── Password Strength Meter ────────────────────────
+    function updateStrength(val) {
+        const bar   = document.getElementById('strengthBar');
+        const label = document.getElementById('strengthLabel');
+        let score   = 0;
+
+        if (val.length >= 8)                      score++;
+        if (/[A-Z]/.test(val))                    score++;
+        if (/[0-9]/.test(val))                    score++;
+        if (/[^A-Za-z0-9]/.test(val))             score++;
+
+        const levels = [
+            { pct: '0%',   color: '#eee',   text: 'Escribe tu nueva contraseña' },
+            { pct: '25%',  color: '#f44336', text: 'Muy débil' },
+            { pct: '50%',  color: '#ff9800', text: 'Moderada' },
+            { pct: '75%',  color: '#2196f3', text: 'Buena' },
+            { pct: '100%', color: '#4caf50', text: '¡Muy segura!' },
+        ];
+
+        const lvl = levels[score];
+        bar.style.width    = lvl.pct;
+        bar.style.background = lvl.color;
+        label.textContent  = lvl.text;
+        label.style.color  = lvl.color;
+    }
+
+    // ── Live Password Match Validation ─────────────────
+    const newPass  = document.getElementById('new_password');
+    const confPass = document.getElementById('confirm_password');
+
+    function checkMatch() {
+        if (confPass.value.length === 0) {
+            confPass.style.borderColor = '#e5e5e5';
+            return;
+        }
+        if (newPass.value === confPass.value) {
+            confPass.style.borderColor = '#4caf50';
+        } else {
+            confPass.style.borderColor = '#f44336';
+        }
+    }
+
+    newPass.addEventListener('input', checkMatch);
+    confPass.addEventListener('input', checkMatch);
+</script>
+{% endblock %}

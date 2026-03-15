@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - Know U{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% block admin_css %}{% endblock %}
+{% endblock %}
+
+{% block body_class %}admin-body{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+    <!-- Sidebar Compartido -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <h2>Know U</h2>
+            <span>Admin Panel</span>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="{{ url_for('admin.admin_dashboard') }}" class="{% if request.endpoint == 'admin.admin_dashboard' or request.endpoint == 'admin.admin_add_product' or request.endpoint == 'admin.admin_edit_product' %}active{% endif %}"><ion-icon name="cube-outline"></ion-icon> Productos</a></li>
+                <li><a href="{{ url_for('admin.admin_orders') }}" class="{% if request.endpoint == 'admin.admin_orders' %}active{% endif %}"><ion-icon name="cart-outline"></ion-icon> Pedidos</a></li>
+                <li><a href="{{ url_for('admin.admin_community') }}" class="{% if request.endpoint == 'admin.admin_community' %}active{% endif %}"><ion-icon name="color-wand-outline"></ion-icon> Diseños IA</a></li>
+                <li><a href="{{ url_for('admin.admin_users') }}" class="{% if request.endpoint == 'admin.admin_users' %}active{% endif %}"><ion-icon name="people-outline"></ion-icon> Usuarios</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('main.index') }}"><ion-icon name="arrow-back-outline"></ion-icon> Volver a Tienda</a>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="admin-main">
+        {% block admin_content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}
+
+{% block footer %}
+<!-- Ocultar Footer Público -->
+{% endblock %}
+
+{% block extra_js %}
+{% block admin_js %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,265 @@
+/* Estilos para el Panel de Administrador Know U */
+
+body.admin-body {
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Ocultar el header/footer normal en la vista admin si se desea, 
+   o ajustar el layout para que convivan. En este caso forzaremos un layout con sidebar */
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- SIDEBAR --- */
+.admin-sidebar {
+    width: 250px;
+    background: var(--white);
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.sidebar-header span {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar-nav {
+    padding: 20px 0;
+    flex: 1;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-nav li {
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 12px 25px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-nav a ion-icon {
+    font-size: 1.2rem;
+    margin-right: 15px;
+    color: #888;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+    background: #f8f9fa;
+    color: var(--black);
+    border-right: 4px solid var(--black);
+}
+
+.sidebar-nav a:hover ion-icon,
+.sidebar-nav a.active ion-icon {
+    color: var(--black);
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.sidebar-footer a {
+    display: flex;
+    align-items: center;
+    color: #d9534f;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.sidebar-footer a ion-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* --- MAIN CONTENT --- */
+.admin-main {
+    flex: 1;
+    margin-left: 250px; /* Ancho del sidebar */
+    padding: 40px;
+    background: #f8f9fa;
+}
+
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.admin-title h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+}
+
+.admin-title p {
+    color: #666;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.btn-primary-admin {
+    background: var(--black);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-primary-admin:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
+/* --- TABLAS --- */
+.admin-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th, 
+.admin-table td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.admin-table th {
+    background-color: #fafafa;
+    color: #555;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-table tbody tr {
+    transition: background 0.2s;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #fcfcfc;
+}
+
+.admin-table td {
+    font-size: 0.95rem;
+    color: #333;
+    vertical-align: middle;
+}
+
+.product-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-img-mini {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.product-name-bold {
+    font-weight: 600;
+    color: var(--black);
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-category {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.action-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    background: #f4f4f4;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background: #e0e0e0;
+    color: var(--black);
+}
+
+.btn-icon.edit:hover { background: #e3f2fd; color: #1976d2; }
+.btn-icon.delete:hover { background: #ffebee; color: #d32f2f; }

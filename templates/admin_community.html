@@ -1,0 +1,58 @@
+{% extends "admin_base.html" %}
+
+{% block admin_content %}
+<div class="admin-topbar">
+    <div class="admin-title">
+        <h1>Diseños de la Comunidad</h1>
+        <p>Modera los diseños IA que los usuarios han generado (públicos y privados).</p>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Diseño</th>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for design in designs %}
+                <tr>
+                    <td>
+                        <div class="product-cell">
+                            <img src="{{ design.image_url }}" alt="Diseño IA" class="product-img-mini" onclick="window.open(this.src, '_blank')" style="cursor: zoom-in;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span class="product-name-bold truncate-text" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ design.prompt }}">"{{ design.prompt }}"</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>#{{ design.id }}</td>
+                    <td>{{ design.user.email }}</td>
+                    <td>
+                        {% if design.status == 'published' %}
+                        <span class="badge" style="background: #e8f5e9; color: #2e7d32;">Público</span>
+                        {% else %}
+                        <span class="badge badge-category">Privado</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-size: 0.85rem; color: #666;">{{ design.date_created.strftime('%d-%m-%Y') }}</td>
+                    <td>
+                        <div class="action-btns">
+                            <a href="{{ url_for('admin.admin_delete_design', design_id=design.id) }}" class="btn-icon delete" title="Eliminar diseño" onclick="return confirm('¿Eliminar este diseño de la base de datos (y de la tienda pública, si aplica)?');">
+                                <ion-icon name="trash-outline"></ion-icon>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

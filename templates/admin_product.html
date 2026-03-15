@@ -1,77 +1,184 @@
-{% extends "base.html" %}
+{% extends "admin_base.html" %}
 
-{% block title %}{{ action }} Producto - Know U{% endblock %}
+{% block title %}{{ action }} Producto - Know U Admin{% endblock %}
 
-{% block extra_css %}
+{% block admin_css %}
 <style>
-    .form-container {
-        max-width: 600px;
-        margin: 150px auto 50px;
+    .form-wrapper {
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        border: 1px solid #eee;
         padding: 30px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        max-width: 800px;
+    }
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
     }
     .form-group {
         margin-bottom: 20px;
     }
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
     .form-group label {
         display: block;
         margin-bottom: 8px;
-        font-weight: 500;
+        font-weight: 600;
+        color: #444;
+        font-size: 0.9rem;
     }
     .form-group input, .form-group textarea, .form-group select {
         width: 100%;
-        padding: 10px;
+        padding: 12px 15px;
         border: 1px solid #ddd;
-        border-radius: 4px;
+        border-radius: 8px;
         font-family: inherit;
+        font-size: 0.95rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+        outline: none;
+        border-color: var(--black);
+        box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+    }
+    .image-preview-container {
+        margin-top: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px dashed #ccc;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .image-preview-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
     }
     .btn-submit {
-        background-color: var(--main-color);
+        background-color: var(--black);
         color: white;
         border: none;
-        padding: 12px 24px;
-        border-radius: 4px;
+        padding: 12px 30px;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 16px;
-        width: 100%;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+    }
+    .btn-submit:hover {
+        background-color: #333;
+        transform: translateY(-2px);
+    }
+    .btn-cancel {
+        color: #666;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 10px 15px;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+    .btn-cancel:hover {
+        background: #f0f0f0;
+        color: var(--black);
     }
 </style>
 {% endblock %}
 
-{% block content %}
-<div class="form-container">
-    <h1>{{ action }} Producto</h1>
+{% block admin_content %}
+<div class="admin-topbar">
+    <div class="admin-title">
+        <h1>{{ action }} Producto</h1>
+        <p>Completa los detalles del producto para el catálogo.</p>
+    </div>
+</div>
+
+<div class="form-wrapper">
     <form method="POST">
-        <div class="form-group">
-            <label>Nombre del Producto</label>
-            <input type="text" name="name" value="{{ product.name if product else '' }}" required>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label>Nombre del Producto</label>
+                <input type="text" name="name" value="{{ product.name if product else '' }}" placeholder="Ej: Camiseta Urban" required>
+            </div>
+
+            <div class="form-group">
+                <label>Precio (ej: $25.00)</label>
+                <input type="text" name="price" value="{{ product.price if product else '' }}" placeholder="$0.00" required>
+            </div>
+
+            <div class="form-group">
+                <label>Categoría</label>
+                <select name="category">
+                    <option value="Mujer" {% if product and product.category == 'Mujer' %}selected{% endif %}>Mujer</option>
+                    <option value="Hombre" {% if product and product.category == 'Hombre' %}selected{% endif %}>Hombre</option>
+                    <option value="Accesorios" {% if product and product.category == 'Accesorios' %}selected{% endif %}>Accesorios</option>
+                    <option value="Bolsos" {% if product and product.category == 'Bolsos' %}selected{% endif %}>Bolsos</option>
+                    <option value="Joyería" {% if product and product.category == 'Joyería' %}selected{% endif %}>Joyería</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label>Descripción</label>
+                <textarea name="description" rows="4" placeholder="Describe los detalles de la prenda...">{{ product.description if product else '' }}</textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <label>URL de la Imagen Principal</label>
+                <input type="text" name="image_url" id="imgUrlInput" value="{{ image_url }}" placeholder="URL o ruta relativa (ej: static/images/item.png)" oninput="updatePreview()" required>
+                
+                <div class="image-preview-container">
+                    {% if image_url %}
+                    <img id="imgPreview" src="{{ image_url }}" alt="Vista previa de imagen" style="display: block;">
+                    <span id="imgPlaceholder" style="display: none; color: #999;"><ion-icon name="image-outline" style="font-size: 32px;"></ion-icon></span>
+                    {% else %}
+                    <img id="imgPreview" src="#" alt="Vista previa de imagen" style="display: none;">
+                    <span id="imgPlaceholder" style="display: block; color: #999;"><ion-icon name="image-outline" style="font-size: 32px;"></ion-icon></span>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Precio (ej: $25.00)</label>
-            <input type="text" name="price" value="{{ product.price if product else '' }}" required>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">
+                <ion-icon name="save-outline"></ion-icon> {{ "Actualizar" if action == "Editar" else "Crear" }} Producto
+            </button>
+            <a href="{{ url_for('admin.admin_dashboard') }}" class="btn-cancel">Cancelar</a>
         </div>
-        <div class="form-group">
-            <label>Categoría</label>
-            <select name="category">
-                <option value="Mujer" {% if product and product.category == 'Mujer' %}selected{% endif %}>Mujer</option>
-                <option value="Hombre" {% if product and product.category == 'Hombre' %}selected{% endif %}>Hombre</option>
-                <option value="Accesorios" {% if product and product.category == 'Accesorios' %}selected{% endif %}>Accesorios</option>
-                <option value="Bolsos" {% if product and product.category == 'Bolsos' %}selected{% endif %}>Bolsos</option>
-                <option value="Joyería" {% if product and product.category == 'Joyería' %}selected{% endif %}>Joyería</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>URL de Imagen (Ruta relativa o URL)</label>
-            <input type="text" name="image_url" value="{{ image_url }}" placeholder="static/images/..." required>
-        </div>
-        <div class="form-group">
-            <label>Descripción</label>
-            <textarea name="description" rows="5">{{ product.description if product else '' }}</textarea>
-        </div>
-        <button type="submit" class="btn-submit">Guardar Producto</button>
-        <a href="{{ url_for('admin_dashboard') }}" style="display:block; text-align:center; margin-top:15px; color:#666;">Cancelar</a>
     </form>
 </div>
+{% endblock %}
+
+{% block admin_js %}
+<script>
+    function updatePreview() {
+        const input = document.getElementById('imgUrlInput');
+        const preview = document.getElementById('imgPreview');
+        const placeholder = document.getElementById('imgPlaceholder');
+        
+        if(input.value.trim() !== '') {
+            preview.src = input.value;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+        } else {
+            preview.style.display = 'none';
+            placeholder.style.display = 'block';
+        }
+    }
+</script>
 {% endblock %}

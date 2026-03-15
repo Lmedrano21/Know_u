@@ -9,6 +9,8 @@
     <meta name="author" content="Know U">
     <link rel="icon" href="{{ url_for('static', filename='images/logowhite.png') }}?v=2" type="image/x-icon">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- CSS Global -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=bw3">
     {% block extra_css %}{% endblock %}
@@ -41,24 +43,24 @@
                 style="display: flex; align-items: center; gap: 20px; width: auto; position: relative;">
                 <div id="display_login"
                     style="display: {% if current_user.is_authenticated %}flex{% else %}none{% endif %} !important; align-items: center; gap: 15px; position: relative; z-index: 100;">
-                    <a href="{{ url_for('profile') }}" title="Mi Perfil ({{ current_user.first_name }})"
+                    <a href="{{ url_for('user.profile') }}" title="Mi Perfil ({{ current_user.first_name }})"
                         style="font-size: 26px; color: inherit; display: flex; align-items: center;">
                         <ion-icon name="person-outline"></ion-icon>
                     </a>
                     {% if current_user.is_authenticated and current_user.is_admin %}
-                    <a href="{{ url_for('admin_dashboard') }}" title="Panel Admin"
+                    <a href="{{ url_for('admin.admin_dashboard') }}" title="Panel Admin"
                         style="font-size: 26px; color: inherit; display: flex; align-items: center;">
                         <ion-icon name="settings-outline"></ion-icon>
                     </a>
                     {% endif %}
-                    <a href="{{ url_for('logout') }}" id="logout" title="Cerrar Sesión"
+                    <a href="{{ url_for('auth.logout') }}" id="logout" title="Cerrar Sesión"
                         style="font-size: 26px; color: inherit; display: flex; align-items: center;">
                         <ion-icon name="log-out-outline"></ion-icon>
                     </a>
                 </div>
 
                 {% if not current_user.is_authenticated %}
-                <a href="{{ url_for('login') }}" title="Iniciar Sesión" id="login_btn">
+                <a href="{{ url_for('auth.login') }}" title="Iniciar Sesión" id="login_btn">
                     <ion-icon name="person-circle-outline"></ion-icon>
                 </a>
                 {% endif %}
@@ -72,11 +74,11 @@
         <nav>
             <menu>
                 <ul>
-                    <li><a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Inicio</a></li>
-                    <li><a href="{{ url_for('products') }}" class="{% if request.endpoint == 'products' %}active{% endif %}">Tienda</a></li>
-                    <li><a href="{{ url_for('community') }}" class="{% if request.endpoint == 'community' %}active{% endif %}">Comunidad</a></li>
-                    <li><a href="{{ url_for('create_studio') }}" class="{% if request.endpoint == 'create_studio' %}active{% endif %}" style="color: purple; font-weight: bold;"><ion-icon name="sparkles-outline"></ion-icon> Crear</a></li>
-                    <li><a href="{{ url_for('knowu_chat') }}" class="{% if request.endpoint == 'knowu_chat' %}active{% endif %}"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> Chat</a></li>
+                    <li><a href="{{ url_for('main.index') }}" class="{% if request.endpoint == 'main.index' %}active{% endif %}">Inicio</a></li>
+                    <li><a href="{{ url_for('main.products') }}" class="{% if request.endpoint == 'main.products' %}active{% endif %}">Tienda</a></li>
+                    <li><a href="{{ url_for('main.community') }}" class="{% if request.endpoint == 'main.community' %}active{% endif %}">Comunidad</a></li>
+                    <li><a href="{{ url_for('main.create_studio') }}" class="{% if request.endpoint == 'main.create_studio' %}active{% endif %}" style="color: purple; font-weight: bold;"><ion-icon name="sparkles-outline"></ion-icon> Crear</a></li>
+                    <li><a href="{{ url_for('main.knowu_chat') }}" class="{% if request.endpoint == 'main.knowu_chat' %}active{% endif %}"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> Chat</a></li>
                 </ul>
             </menu>
         </nav>
@@ -119,32 +121,73 @@
     </div>
 
     <footer class="footer {% block footer_class %}{% endblock %}">
-        <div class="footer-top">
-            <div class="footer-logo">
-                <img src="{{ url_for('static', filename='images/logo_block.jpg') }}" alt="logo" width="140">
-                <p>El cliente está en el corazón de nuestro modelo de negocio único.</p>
-            </div>
-            <div class="footer-list">
-                <div class="list">
-                    <h4>COMPRAS</h4>
-                    <ul>
-                        <li><a href="#">Tienda de Ropa</a></li>
-                        <li><a href="#">Zapatos en Tendencia</a></li>
-                    </ul>
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <img src="{{ url_for('static', filename='images/logowhite.png') }}" alt="logo" class="footer-logo-img">
+                    <p class="footer-description">Know U: Donde la moda urbana se encuentra con la inteligencia artificial. Crea tu propio estilo y únete a la revolución creativa.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-whatsapp"></ion-icon></a>
+                    </div>
                 </div>
-                <div class="list">
-                    <h4>Servicio al Cliente</h4>
-                    <ul>
-                        <li><a href="#">Contáctanos</a></li>
-                        <li><a href="#">Envíos y Devoluciones</a></li>
-                    </ul>
+                
+                <div class="footer-links-grid">
+                    <div class="footer-column">
+                        <h4>Categorías</h4>
+                        <ul>
+                            <li><a href="{{ url_for('main.products', category='Camisetas') }}">Camisetas IA</a></li>
+                            <li><a href="{{ url_for('main.products', category='Sudaderas') }}">Sudaderas</a></li>
+                            <li><a href="{{ url_for('main.products', category='Accesorios') }}">Accesorios</a></li>
+                            <li><a href="{{ url_for('main.community') }}">Diseños de la Comunidad</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Atención al Cliente</h4>
+                        <ul>
+                            <li><a href="#">Centro de Ayuda</a></li>
+                            <li><a href="#">Seguimiento de Pedido</a></li>
+                            <li><a href="#">Envíos y Entregas</a></li>
+                            <li><a href="#">Cambios y Devoluciones</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contacto</h4>
+                        <ul class="contact-info">
+                            <li><ion-icon name="location-outline"></ion-icon> Medellín, Colombia</li>
+                            <li><ion-icon name="call-outline"></ion-icon> +57 300 000 0000</li>
+                            <li><ion-icon name="mail-outline"></ion-icon> soporte@knowu.com</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-newsletter">
+                    <h4>Suscríbete</h4>
+                    <p>Entérate de lanzamientos exclusivos y ofertas especiales.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu correo electrónico" required>
+                        <button type="submit"><ion-icon name="send-outline"></ion-icon></button>
+                    </form>
+                    <div class="payment-methods">
+                        <ion-icon name="card-outline"></ion-icon>
+                        <ion-icon name="cash-outline"></ion-icon>
+                        <ion-icon name="diamond-outline"></ion-icon>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <p class="footer-company-name">
-                © 2024 Todos los derechos reservados. Hecho con <ion-icon name="heart"></ion-icon> por Amira Alaa
-            </p>
+            
+            <div class="footer-bottom">
+                <div class="footer-credit">
+                    <p>© 2025 Know U. Hecho con <ion-icon name="heart" class="heart-icon"></ion-icon> por <span class="author-name">Luis Medrano</span></p>
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos de Servicio</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
         </div>
     </footer>
 

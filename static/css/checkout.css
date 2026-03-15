@@ -3,56 +3,93 @@
     margin: 0;
     box-sizing: border-box;
 }
-body{
-    font-family: "Poppins", sans-serif;
+body {
+    font-family: 'DM Sans', 'Inter', "Poppins", sans-serif;
+    background-color: #fafafa;
 }
 .checkout{
     width: 100%;
-    height: 100vh;
+    min-height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 .checkout-container{
   width: 100%;
-  height: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 8%;
+  padding: 50px 40px;
+  text-align: center;
+  border: 1px solid #f0f0f0;
 }
+#checkoutIcon {
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes scaleIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 .checkout-container h4{
-    font-size: 22px;
-    font-weight: 500;
-    text-transform: capitalize;
-    margin: 14px 0;
-    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--black, #000);
+    margin: 20px 0 10px;
+    letter-spacing: -0.5px;
 }
-.checkout-container div span{
-    font-size: 16px;
-    color: #727272;
-    text-transform: capitalize;
+
+.checkout-container div {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+    width: 100%;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.checkout-container div span:nth-child(odd){
+    font-size: 0.95rem;
+    color: #888;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.checkout-container div span:nth-child(even){
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 #id_order,
 #total_price,
 #order_date{
-    color: #000;
+    color: var(--black, #000);
+    margin-bottom: 10px;
 }
 #back_btn{
-    background-color: #000;
+    background-color: var(--black, #000);
     color: #fff;
-    font-size: 14px;
-    font-family: 400;
-    text-transform: capitalize;
-    padding: 10px 40px;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 15px 40px;
     border: none;
-    border-radius: 4px;
-    margin: 20px 0;
-    height: 48px;
-    transition: .25s ease-in-out !important;
+    border-radius: 30px;
+    margin-top: 20px;
+    width: 100%;
+    transition: all 0.3s ease;
     cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 #back_btn:hover{
-    background-color: #333333;
+    background-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
