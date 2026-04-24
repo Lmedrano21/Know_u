@@ -2,9 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const productDetails = document.querySelector('.productDetails');
     const quantityInput = document.getElementById("productCount");
     
-    if (productDetails) {
-        const productId = productDetails.dataset.productId;
-        getDetails(productId);
+    // Obtener ID de la URL (?id=X)
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    if (productId) {
+        getDetails(parseInt(productId));
+    } else if (productDetails && productDetails.dataset.productId) {
+        getDetails(parseInt(productDetails.dataset.productId));
     }
 
     // Controladores de cantidad
@@ -28,10 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function getDetails(id) {
     try {
-        const response = await fetch(`/api/products/${id}`);
-        if (!response.ok) throw new Error('Producto no encontrado');
+        const response = await fetch('static/json/products.json');
+        const products = await response.json();
+        const product = products.find(p => p.id === id);
         
-        const product = await response.json();
+        if (!product) throw new Error('Producto no encontrado');
+        
         displayDetails(product);
     } catch (error) {
         console.error('Error:', error);
@@ -41,7 +48,8 @@ async function getDetails(id) {
 
 function displayDetails(product) {
     // Actualizar elementos del DOM
-    const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
+    let imagePath = product.images.length > 0 ? product.images[0] : 'static/images/no-image.png';
+    if (!imagePath.startsWith('static/')) imagePath = 'static/' + imagePath;
     
     document.getElementById("product_image").src = imagePath;
     document.querySelector(".category_name").textContent = product.category;

@@ -4,9 +4,17 @@ const productCount = document.getElementById('productCount');
 // Función principal para obtener productos
 async function getProducts() {
     try {
-        const response = await fetch('/api/products');
+        const response = await fetch('static/json/products.json');
         if (!response.ok) throw new Error('Error en la red');
-        const products = await response.json();
+        let products = await response.json();
+        
+        // Filtrado por categoría si existe en la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        if (category) {
+            products = products.filter(p => p.category.toLowerCase() === category.toLowerCase());
+        }
+        
         displayProducts(products);
     } catch (error) {
         console.error('Error al cargar productos:', error);
@@ -25,9 +33,9 @@ function displayProducts(products) {
     }
 
     products.forEach(product => {
-        // Aseguramos que la ruta de la imagen sea absoluta desde la raíz
-        // La API devuelve "static/images/...", le agregamos "/" al inicio
-        const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
+        // Aseguramos que la ruta de la imagen sea correcta para entorno estático
+        let imagePath = product.images.length > 0 ? product.images[0] : 'static/images/no-image.png';
+        if (!imagePath.startsWith('static/')) imagePath = 'static/' + imagePath;
         
         const productHTML = `
             <div class="product-card">
@@ -38,14 +46,14 @@ function displayProducts(products) {
                         <button class="action-btn" aria-label="add to cart" onclick="addToCart(${product.id})">
                             <ion-icon name="cart-outline"></ion-icon>
                         </button>
-                        <button class="action-btn" aria-label="view details" onclick="window.location.href='/product/${product.id}'">
+                        <button class="action-btn" aria-label="view details" onclick="window.location.href='ProductDetails.html?id=${product.id}'">
                             <ion-icon name="eye-outline"></ion-icon>
                         </button>
                     </div>
                 </div>
                 <div class="card-content">
                     <h3 class="card-title">
-                        <a href="/product/${product.id}">${product.name}</a>
+                        <a href="ProductDetails.html?id=${product.id}">${product.name}</a>
                     </h3>
                     <data class="card-price" value="${product.price}">${product.price}</data>
                 </div>

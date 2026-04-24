@@ -1,25 +1,477 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Know U - App de Flask</title>
-    <style>
-      body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f4f4f9; color: #333; }
-      .container { text-align: center; max-width: 600px; padding: 20px; border-radius: 8px; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-      h1 { color: #2c3e50; }
-      p { line-height: 1.6; }
-      .code { background: #eee; padding: 5px 10px; border-radius: 4px; font-family: monospace; }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Know U Project</h1>
-      <p>Esta es una aplicación dinámica creada con <strong>Flask (Python)</strong>.</p>
-      <p>⚠️ <strong>Nota:</strong> GitHub Pages no puede ejecutar código Python, por lo que esta página aparece estática.</p>
-      <p>Para ejecutarla localmente, usa:</p>
-      <p class="code">python app.py</p>
-      <p>Para desplegarla en la web, sigue nuestra <a href="deployment_guide.md">guía de despliegue</a> para Render o Vercel.</p>
+    <meta name="description"
+        content="Descubre la nueva colección de Know U. Moda premium para mujer y hombre con envío global.">
+    <meta name="author" content="Know U">
+    <link rel="icon" href="static/images/logowhite.png?v=2" type="image/x-icon">
+
+    <meta name="csrf-token" content="">
+
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="static/css/main.css?v=bw3">
+    <link rel="stylesheet" href="static/css/style.css?v=bw3">
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:wght@300;400;500;600;700&family=Rubik:wght@300..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <title>Know U — Moda que te define</title>
+</head>
+
+<body class="dark-page">
+    <header class="container" id="header">
+        <div class="header_top">
+            <img src="static/images/logowhite.png" alt="logo" id="logo">
+            <div class="header_social">
+                <a href="https://www.instagram.com/sa__fashionstyle/" target="_blank"><ion-icon
+                        name="logo-instagram"></ion-icon></a>
+                <a href="https://www.facebook.com/" target="_blank"><ion-icon name="logo-facebook"></ion-icon></a>
+                <a href="https://wa.me/201007738790" target="_blank"><ion-icon name="logo-whatsapp"></ion-icon></a>
+            </div>
+            <div class="header_actions"
+                style="display: flex; align-items: center; gap: 20px; width: auto; position: relative;">
+                <div id="display_login"
+                    style="display: none !important; align-items: center; gap: 15px; position: relative; z-index: 100;">
+                    <a href="profile.html" title="Mi Perfil ({{ current_user.first_name }})"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </a>
+                    
+                    <a href="admin_dashboard.html" title="Panel Admin"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="settings-outline"></ion-icon>
+                    </a>
+                    
+                    <a href="index.html" id="logout" title="Cerrar Sesión"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </a>
+                </div>
+
+                
+                <a href="login.html" title="Iniciar Sesión" id="login_btn">
+                    <ion-icon name="person-circle-outline"></ion-icon>
+                </a>
+                
+
+                <a href="#" class="icon-cart" style="position: relative; z-index: 50;">
+                    <ion-icon name="cart-outline"></ion-icon>
+                    <span id="cart-counter">0</span>
+                </a>
+            </div>
+        </div>
+        <nav>
+            <menu>
+                <ul>
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="products.html" class="active">Tienda</a></li>
+                    <li><a href="community.html" class="active">Comunidad</a></li>
+                    <li><a href="create.html" class="active" style="color: purple; font-weight: bold;"><ion-icon name="sparkles-outline"></ion-icon> Crear</a></li>
+                    <li><a href="knowu_chat.html" class="active"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> Chat</a></li>
+                </ul>
+            </menu>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+        
+
+        <!-- ===============================================================
+     HERO FULLSCREEN
+     =============================================================== -->
+<section class="hero-fullscreen" id="hero">
+
+  <!-- Animated gradient blobs -->
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+
+  <!-- Particle canvas -->
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- Hero text -->
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Nueva Colección 2025
     </div>
-  </body>
+
+    <h1 class="hero-title">
+      Moda que te<br>
+      <span class="gradient-word" id="typewriter-target">define</span><span class="cursor"></span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Descubre piezas exclusivas diseñadas para cada momento de tu vida. Estilo sin compromiso.
+    </p>
+
+    <div class="hero-actions">
+      <a href="products.html" class="btn-primary">
+        <span>Explorar Colección</span>
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </a>
+      <a href="knowu_chat.html" class="btn-glass">
+        <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        <span>Habla con Know U</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ===============================================================
+     INFO BAR
+     =============================================================== -->
+<div class="information reveal">
+  <div class="info">
+    <div class="info-icon">
+      <img src="static/images/global-distribution.png" alt="Envío global">
+    </div>
+    <div class="info-text">
+      <h3>Envío a todo el mundo</h3>
+      <p>Gratis en pedidos superiores a $100 USD</p>
+    </div>
+  </div>
+  <div class="info">
+    <div class="info-icon">
+      <img src="static/images/delivery-status.png" alt="Devoluciones">
+    </div>
+    <div class="info-text">
+      <h3>Devolución en 30 días</h3>
+      <p>Devuelve sin preguntas dentro de 30 días</p>
+    </div>
+  </div>
+  <div class="info">
+    <div class="info-icon">
+      <img src="static/images/check.png" alt="Pago seguro">
+    </div>
+    <div class="info-text">
+      <h3>Pago 100% Seguro</h3>
+      <p>Transacciones cifradas con PEV</p>
+    </div>
+  </div>
+  <div class="info">
+    <div class="info-icon">
+      <img src="static/images/24-hours-support.png" alt="Soporte">
+    </div>
+    <div class="info-text">
+      <h3>Soporte 24/7</h3>
+      <p>Estamos disponibles a cualquier hora</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================================
+     TRENDING PRODUCTS
+     =============================================================== -->
+<div class="top_products">
+  <div class="container">
+    <div class="header reveal">
+      <span class="section-label">Lo más popular</span>
+      <h3>Productos en Tendencia</h3>
+      <p>Sigue las tendencias más populares y obtén artículos exclusivos de Know U.</p>
+    </div>
+    <div class="products">
+      <!-- Filled dynamically by index.js -->
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================================
+     COLLECTIONS
+     =============================================================== -->
+<div class="collection" id="collection" aria-label="collection">
+  <div class="section-header reveal">
+    <span class="section-label">Colecciones</span>
+    <h2>Elige tu estilo</h2>
+  </div>
+  <div class="container">
+    <ul class="collection-list">
+
+      <li class="reveal">
+        <div class="collection-card has-before hover:shine">
+          <h2 class="card-title">Colección de Verano</h2>
+          <p class="card-text">Desde $17.99</p>
+          <a href="products.html" class="btn-link">
+            <span>Compra ahora</span>
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </a>
+          <div class="has-bg-image" style="background-image: url('static/images/background/banner1.webp')"></div>
+        </div>
+      </li>
+
+      <li class="reveal">
+        <div class="collection-card has-before hover:shine">
+          <h2 class="card-title">¿Qué hay de nuevo?</h2>
+          <p class="card-text">Consigue el brillo</p>
+          <a href="products.html" class="btn-link">
+            <span>Descubre ahora</span>
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </a>
+          <div class="has-bg-image" style="background-image: url('static/images/background/banner2.webp')"></div>
+        </div>
+      </li>
+
+      <li class="reveal">
+        <div class="collection-card has-before hover:shine">
+          <h2 class="card-title">Compra 1 y Llévate 1</h2>
+          <p class="card-text">Desde $7.99</p>
+          <a href="products.html" class="btn-link">
+            <span>Descubre ahora</span>
+            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
+          </a>
+          <div class="has-bg-image" style="background-image: url('static/images/background/banner3.webp')"></div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+<!-- ===============================================================
+     NEWSLETTER BANNER
+     =============================================================== -->
+<div class="news hight reveal">
+  <div class="news-text">
+    <h4>Únete al club Know U</h4>
+    <p>Suscríbete a nuestro boletín y obtén un 20% de descuento en tu primera compra</p>
+  </div>
+  <div class="Subscribe-form">
+    <input type="email" name="email" placeholder="tu@correo.com" autocomplete="off">
+    <button type="submit">
+      <img src="static/images/send.png" alt="Enviar" width="22"/>
+    </button>
+  </div>
+</div>
+    </main>
+
+    <!-- Carrito Lateral (Común en todas las páginas) -->
+    <div class="cart-section">
+        <div class="cart-header">
+            <h2>CARRITO DE COMPRAS</h2>
+            <div class="closeCart">
+                <ion-icon name="close-outline" id="closeCart"></ion-icon>
+            </div>
+        </div>
+        <div class="cart_products">
+            <!-- JS llenará esto -->
+        </div>
+        <div class="cart_total">
+            <h3>Total:</h3>
+            <span id="total_price"></span>
+        </div>
+        <div class="btn_control">
+            <button class="viewCart" onclick="viewCart();">Ver Carrito</button>
+            <button class="checkout" onclick="checkOut();">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <footer class="footer ">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <img src="static/images/logowhite.png" alt="logo" class="footer-logo-img">
+                    <p class="footer-description">Know U: Donde la moda urbana se encuentra con la inteligencia artificial. Crea tu propio estilo y únete a la revolución creativa.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-whatsapp"></ion-icon></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-grid">
+                    <div class="footer-column">
+                        <h4>Categorías</h4>
+                        <ul>
+                            <li><a href="products.html?category=Camisetas">Camisetas IA</a></li>
+                            <li><a href="products.html?category=Sudaderas">Sudaderas</a></li>
+                            <li><a href="products.html?category=Accesorios">Accesorios</a></li>
+                            <li><a href="community.html">Diseños de la Comunidad</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Atención al Cliente</h4>
+                        <ul>
+                            <li><a href="#">Centro de Ayuda</a></li>
+                            <li><a href="#">Seguimiento de Pedido</a></li>
+                            <li><a href="#">Envíos y Entregas</a></li>
+                            <li><a href="#">Cambios y Devoluciones</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contacto</h4>
+                        <ul class="contact-info">
+                            <li><ion-icon name="location-outline"></ion-icon> Medellín, Colombia</li>
+                            <li><ion-icon name="call-outline"></ion-icon> +57 300 000 0000</li>
+                            <li><ion-icon name="mail-outline"></ion-icon> soporte@knowu.com</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-newsletter">
+                    <h4>Suscríbete</h4>
+                    <p>Entérate de lanzamientos exclusivos y ofertas especiales.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu correo electrónico" required>
+                        <button type="submit"><ion-icon name="send-outline"></ion-icon></button>
+                    </form>
+                    <div class="payment-methods">
+                        <ion-icon name="card-outline"></ion-icon>
+                        <ion-icon name="cash-outline"></ion-icon>
+                        <ion-icon name="diamond-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-credit">
+                    <p>© 2025 Know U. Hecho con <ion-icon name="heart" class="heart-icon"></ion-icon> por <span class="author-name">Luis Medrano</span></p>
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos de Servicio</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button id="scrollBtn"><ion-icon name="arrow-up-outline" id="btn-up"></ion-icon></button>
+
+    <!-- Scripts Globales -->
+    <script src="static/js/main.js"></script>
+    <script src="static/js/cart.js"></script>
+    <script src="static/js/index.js"></script>
+<script>
+/* ================================================================
+   PARTICLE HERO
+   ================================================================ */
+(function() {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  const PARTICLE_COUNT = 90;
+  const COLORS = ['rgba(0,0,0,', 'rgba(40,40,40,', 'rgba(80,80,80,', 'rgba(20,20,20,'];
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function Particle() {
+    this.reset();
+  }
+  Particle.prototype.reset = function() {
+    this.x    = Math.random() * W;
+    this.y    = Math.random() * H;
+    this.r    = Math.random() * 2 + 0.5;
+    this.vx   = (Math.random() - 0.5) * 0.4;
+    this.vy   = (Math.random() - 0.5) * 0.4;
+    this.base = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.alpha = Math.random() * 0.5 + 0.1;
+  };
+
+  function init() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < -10) p.x = W + 10;
+      if (p.x > W + 10) p.x = -10;
+      if (p.y < -10) p.y = H + 10;
+      if (p.y > H + 10) p.y = -10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.base + p.alpha + ')';
+      ctx.fill();
+    });
+
+    // Draw connecting lines
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(0,0,0,' + (0.08 * (1 - dist / 120)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); init(); });
+  resize(); init(); draw();
+})();
+
+/* ================================================================
+   TYPEWRITER EFFECT
+   ================================================================ */
+(function() {
+  const el = document.getElementById('typewriter-target');
+  if (!el) return;
+  const words = ['define', 'inspira', 'eleva', 'distingue'];
+  let wi = 0, ci = 0, deleting = false;
+
+  function tick() {
+    const word = words[wi];
+    if (!deleting) {
+      el.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { deleting = true; return setTimeout(tick, 2000); }
+    } else {
+      el.textContent = word.slice(0, --ci);
+      if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; return setTimeout(tick, 400); }
+    }
+    setTimeout(tick, deleting ? 60 : 100);
+  }
+  setTimeout(tick, 1200);
+})();
+
+/* ================================================================
+   SCROLL REVEAL
+   ================================================================ */
+(function() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+})();
+</script>
+</body>
+
 </html>

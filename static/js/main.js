@@ -58,7 +58,7 @@ closeCart.addEventListener('click', () => {
 })
 
 function viewCart(){
-    window.location.href = "/cart";
+    window.location.href = "cartPage.html";
 }
 
 // Eliminadas funciones setupUI y logout (manejadas por backend)

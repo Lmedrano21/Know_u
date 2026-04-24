@@ -66,7 +66,7 @@ function playSlider() {
 
 async function getProducts() {
     try {
-        let response = await fetch('/api/products');
+        let response = await fetch('static/json/products.json');
         let products = await response.json();
         let trendingProducts = products.filter(product => product.isTrending);
         displayTrendingProducts(trendingProducts);
@@ -77,16 +77,18 @@ async function getProducts() {
 function displayTrendingProducts(trendingProducts){
     let content = ``;
     for(let i = 0 ; i < trendingProducts.length ; i++){
+        let imagePath = trendingProducts[i].images[0];
+        if (!imagePath.startsWith('static/')) imagePath = 'static/' + imagePath;
         content += `
         <div class="product-card"  data-id="${trendingProducts[i].id}">
         <div class="card-img">
-            <img src=${trendingProducts[i].images[0]}  onclick=displayDetails(${trendingProducts[i].id});>
+            <img src="${imagePath}"  onclick="displayDetails(${trendingProducts[i].id});">
             <a href="" class="addToCart">
                 <ion-icon name="cart-outline" class="Cart"></ion-icon>
             </a>
         </div>
         <div class="card-info">
-             <h4 class="product-name" onclick=displayDetails(${trendingProducts[i].id});>${trendingProducts[i].name}</h4>
+             <h4 class="product-name" onclick="displayDetails(${trendingProducts[i].id});">${trendingProducts[i].name}</h4>
              <h5 class="product-price">${trendingProducts[i].price}</h5>
         </div>
     </div>`
@@ -99,7 +101,7 @@ addToCartLinks.forEach(link => {
         event.preventDefault();
         let productCard = event.target.closest('.product-card');
         if (productCard && productCard.dataset.id) {
-            let id_product = productCard.dataset.id;
+            let id_product = parseInt(productCard.dataset.id);
             addToCart(id_product);
             showCart();
         }
@@ -111,5 +113,5 @@ function showCart(){
     body.classList.add('showCart');
 }
 function displayDetails(productId){
-    window.location.href = `/product/${productId}`;
+    window.location.href = `ProductDetails.html?id=${productId}`;
 }

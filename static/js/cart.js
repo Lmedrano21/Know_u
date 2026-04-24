@@ -74,8 +74,7 @@ async function renderSideCart() {
 
     try {
         // Obtenemos todos los productos para cruzar datos
-        // (En producción idealmente usarías un endpoint que reciba IDs específicos)
-        const response = await fetch('/api/products');
+        const response = await fetch('static/json/products.json');
         const allProducts = await response.json();
         
         cart.forEach(item => {
@@ -101,12 +100,13 @@ async function renderSideCart() {
                 `;
             } else {
                 // Renderizado para producto normal
-                const product = allProducts.find(p => p.id === item.id);
+                const product = allProducts.find(p => p.id == item.id);
                 if (product) {
                     const priceNumber = parseFloat(product.price.replace(/[^0-9.-]+/g,""));
                     totalPrice += priceNumber * item.quantity;
                     
-                    const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
+                    let imagePath = product.images.length > 0 ? product.images[0] : 'static/images/no-image.png';
+                    if (!imagePath.startsWith('static/')) imagePath = 'static/' + imagePath;
 
                     cartContainer.innerHTML += `
                         <div class="cart-item">
@@ -156,7 +156,7 @@ async function renderCartPage() {
     }
 
     try {
-        const response = await fetch('/api/products');
+        const response = await fetch('static/json/products.json');
         const allProducts = await response.json();
         
         cart.forEach(item => {
@@ -189,13 +189,14 @@ async function renderCartPage() {
                     </div>
                 `;
             } else {
-                const product = allProducts.find(p => p.id === item.id);
+                const product = allProducts.find(p => p.id == item.id);
                 if (product) {
                     const priceNumber = parseFloat(product.price.replace(/[^0-9.-]+/g,""));
                     const itemTotal = priceNumber * item.quantity;
                     subtotal += itemTotal;
                     
-                    const imagePath = product.images.length > 0 ? `/${product.images[0]}` : '/static/images/no-image.png';
+                    let imagePath = product.images.length > 0 ? product.images[0] : 'static/images/no-image.png';
+                    if (!imagePath.startsWith('static/')) imagePath = 'static/' + imagePath;
 
                     cartPageContainer.innerHTML += `
                         <div class="cart_card">
@@ -257,7 +258,7 @@ function removeFromCart(productId) {
 }
 
 function viewCart() {
-    window.location.href = '/cart';
+    window.location.href = 'cartPage.html';
 }
 
 async function checkOut() {
@@ -266,36 +267,11 @@ async function checkOut() {
         return;
     }
 
-    try {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '';
-        const response = await fetch('/api/checkout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
-            },
-            body: JSON.stringify({ items: cart })
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-            // Limpiar carrito y redirigir
-            localStorage.removeItem('knowu_cart');
-            cart = [];
-            window.location.href = `/checkout?orderId=${result.order_id}`;
-        } else {
-            // Si falla (ej: no logueado), redirigir a login o mostrar error
-            if (response.status === 401) {
-                window.location.href = '/login';
-            } else {
-                alert('Error al procesar el pedido: ' + (result.message || 'Intente nuevamente'));
-            }
-        }
-    } catch (error) {
-        console.error('Error en checkout:', error);
-        alert('Hubo un problema de conexión.');
-    }
+    alert("Pedido procesado con éxito (Simulación estática)");
+    localStorage.removeItem('knowu_cart');
+    cart = [];
+    updateCartCounter();
+    window.location.href = 'index.html';
 }
 
 // Inicialización

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Descubre las últimas tendencias en moda para mujer y hombre en Know U.">
+    <meta name="author" content="Know U">
+    <link rel="icon" href="static/images/logowhite.png?v=2" type="image/x-icon">
+
+    <meta name="csrf-token" content="">
+
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="static/css/main.css?v=bw3">
+    <link rel="stylesheet" href="static/css/community.css">
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Poppins:wght@300;400;500;600;700&family=Rubik:wght@300..900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <title>Comunidad | Know U</title>
+</head>
+
+<body class="">
+    <header class="container" id="header">
+        <div class="header_top">
+            <img src="static/images/logowhite.png" alt="logo" id="logo">
+            <div class="header_social">
+                <a href="https://www.instagram.com/sa__fashionstyle/" target="_blank"><ion-icon
+                        name="logo-instagram"></ion-icon></a>
+                <a href="https://www.facebook.com/" target="_blank"><ion-icon name="logo-facebook"></ion-icon></a>
+                <a href="https://wa.me/201007738790" target="_blank"><ion-icon name="logo-whatsapp"></ion-icon></a>
+            </div>
+            <div class="header_actions"
+                style="display: flex; align-items: center; gap: 20px; width: auto; position: relative;">
+                <div id="display_login"
+                    style="display: none !important; align-items: center; gap: 15px; position: relative; z-index: 100;">
+                    <a href="profile.html" title="Mi Perfil ({{ current_user.first_name }})"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="person-outline"></ion-icon>
+                    </a>
+                    
+                    <a href="admin_dashboard.html" title="Panel Admin"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="settings-outline"></ion-icon>
+                    </a>
+                    
+                    <a href="index.html" id="logout" title="Cerrar Sesión"
+                        style="font-size: 26px; color: inherit; display: flex; align-items: center;">
+                        <ion-icon name="log-out-outline"></ion-icon>
+                    </a>
+                </div>
+
+                
+                <a href="login.html" title="Iniciar Sesión" id="login_btn">
+                    <ion-icon name="person-circle-outline"></ion-icon>
+                </a>
+                
+
+                <a href="#" class="icon-cart" style="position: relative; z-index: 50;">
+                    <ion-icon name="cart-outline"></ion-icon>
+                    <span id="cart-counter">0</span>
+                </a>
+            </div>
+        </div>
+        <nav>
+            <menu>
+                <ul>
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="products.html" class="active">Tienda</a></li>
+                    <li><a href="community.html" class="active">Comunidad</a></li>
+                    <li><a href="create.html" class="active" style="color: purple; font-weight: bold;"><ion-icon name="sparkles-outline"></ion-icon> Crear</a></li>
+                    <li><a href="knowu_chat.html" class="active"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> Chat</a></li>
+                </ul>
+            </menu>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+        
+
+        <section class="community-header">
+    <h1>Galería de la Comunidad</h1>
+    <p>Explora y compra diseños únicos creados con Inteligencia Artificial por otros miembros de la comunidad Know U.</p>
+</section>
+
+<div class="community-container">
+    
+        <div class="designs-feed">
+            {% for design in designs %}
+            <div class="design-item">
+                <!-- Header: Autor -->
+                <div class="design-header">
+                    <a href="{{ url_for('user.public_profile', user_id=design.user.id) }}" class="design-author" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                        <div class="author-avatar" style="width: 35px; height: 35px;">
+                            {{ design.user.first_name[0] | upper }}{{ design.user.last_name[0] | upper if design.user.last_name else '' }}
+                        </div>
+                        <span class="author-name" style="font-size: 0.95rem;">{{ design.user.first_name }} {{ design.user.last_name or '' }}</span>
+                    </a>
+                </div>
+
+                <!-- Imagen principal -->
+                <img src="{{ design.image_url }}" alt="Diseño por {{ design.user.first_name }}" class="design-image" loading="lazy">
+                
+                <!-- Barra de Interacciones -->
+                <!-- Barra de Interacciones -->
+                <div class="design-actions-bar">
+                    {% set user_liked = false %}
+                    {% set user_saved = false %}
+                    heart-outline"></ion-icon>
+                        <span class="count">{{ design.likes|length }}</span>
+                    </button>
+                    
+                    <button class="action-btn-bar comment-btn" onclick="openCommentModal({{ design.id }})">
+                        <ion-icon name="chatbubble-outline"></ion-icon>
+                        <span class="count">{{ design.comments|length }}</span>
+                    </button>
+                    
+                    <button class="action-btn-bar save-btn active" data-id="{{ design.id }}" onclick="toggleSave(this, {{ design.id }})">
+                        <ion-icon name="bookmarkbookmark-outline"></ion-icon>
+                    </button>
+                    
+                    <div style="flex-grow: 1;"></div>
+                    
+                    <button class="action-btn-bar save-btn active" data-id="{{ design.id }}" onclick="toggleSave(this, {{ design.id }})">
+                        <ion-icon name="bookmarkbookmark-outline"></ion-icon>
+                    </button>
+                </div>
+                
+                <!-- Contenido (Caption, Comentarios, Pie) -->
+                <div class="design-content-feed">
+                    <p class="design-prompt" title="{{ design.prompt }}" style="margin-bottom: 5px;">
+                        <span style="font-weight: 700; color: var(--black); margin-right: 5px;">{{ design.user.first_name }}</span> {{ design.prompt }}
+                    </p>
+                    
+                    <div class="design-comments-section">
+                        
+                            {% for comment in design.comments[:3] %}
+                            <div class="comment-item">
+                                <span class="comment-author">{{ comment.user.first_name }}</span> 
+                                <span>{{ comment.text }}</span>
+                            </div>
+                            {% endfor %}
+                            
+                                <button class="view-all-comments" onclick="openCommentModal({{ design.id }})">Ver los {{ design.comments|length }} comentarios</button>
+                            
+                        
+                            <span style="font-size: 0.85rem; color: #999;">Sé el primero en comentar.</span>
+                        
+                    </div>
+                    
+                    <div class="design-footer-feed">
+                        <span class="design-price" style="font-size: 1.2rem;">$35.00</span>
+                        <button class="btn-buy-community" data-id="{{ design.id }}" data-prompt="{{ design.prompt|replace('"', '&quot;') }}" data-image="{{ design.image_url }}">
+                            <ion-icon name="cart-outline"></ion-icon> Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    
+        <div style="text-align: center; padding: 60px 20px; background: #fafafa; border-radius: 12px; border: 1px dashed #ddd;">
+            <ion-icon name="planet-outline" style="font-size: 64px; color: #ccc; margin-bottom: 15px;"></ion-icon>
+            <h2 style="font-size: 1.5rem; color: #555; margin-bottom: 10px;">La comunidad acaba de nacer</h2>
+            <p style="color: #777; margin-bottom: 25px;">Aún no hay diseños públicos. ¡Sé el primero en compartir tu creatividad con el mundo!</p>
+            <a href="{{ url_for('create_studio') }}" class="btn" style="background: purple; color: white; padding: 12px 25px; border-radius: 25px; text-decoration: none; font-weight: 600;">Ir al Estudio IA</a>
+        </div>
+    
+</div>
+
+<!-- Modal de Comentario Básico -->
+<div class="comment-modal-overlay" id="commentModalOverlay">
+    <div class="comment-modal">
+        <h3 style="margin-bottom: 15px;">Añadir Comentario</h3>
+        <textarea id="commentText" rows="4" style="width: 100%; border-radius: 8px; border: 1px solid #ccc; padding: 10px; font-family: inherit; margin-bottom: 15px;" placeholder="Escribe algo inspirador..."></textarea>
+        <input type="hidden" id="activeDesignId">
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button onclick="closeCommentModal()" class="btn" style="background: #eee; color: #555; padding: 8px 15px; border-radius: 20px; border: none; cursor: pointer;">Cancelar</button>
+            <button onclick="submitComment()" class="btn" style="background: var(--black); color: white; padding: 8px 15px; border-radius: 20px; border: none; cursor: pointer;">Comentar</button>
+        </div>
+    </div>
+</div>
+    </main>
+
+    <!-- Carrito Lateral (Común en todas las páginas) -->
+    <div class="cart-section">
+        <div class="cart-header">
+            <h2>CARRITO DE COMPRAS</h2>
+            <div class="closeCart">
+                <ion-icon name="close-outline" id="closeCart"></ion-icon>
+            </div>
+        </div>
+        <div class="cart_products">
+            <!-- JS llenará esto -->
+        </div>
+        <div class="cart_total">
+            <h3>Total:</h3>
+            <span id="total_price"></span>
+        </div>
+        <div class="btn_control">
+            <button class="viewCart" onclick="viewCart();">Ver Carrito</button>
+            <button class="checkout" onclick="checkOut();">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <footer class="footer ">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <img src="static/images/logowhite.png" alt="logo" class="footer-logo-img">
+                    <p class="footer-description">Know U: Donde la moda urbana se encuentra con la inteligencia artificial. Crea tu propio estilo y únete a la revolución creativa.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a>
+                        <a href="#" class="social-link"><ion-icon name="logo-whatsapp"></ion-icon></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-grid">
+                    <div class="footer-column">
+                        <h4>Categorías</h4>
+                        <ul>
+                            <li><a href="products.html?category=Camisetas">Camisetas IA</a></li>
+                            <li><a href="products.html?category=Sudaderas">Sudaderas</a></li>
+                            <li><a href="products.html?category=Accesorios">Accesorios</a></li>
+                            <li><a href="community.html">Diseños de la Comunidad</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Atención al Cliente</h4>
+                        <ul>
+                            <li><a href="#">Centro de Ayuda</a></li>
+                            <li><a href="#">Seguimiento de Pedido</a></li>
+                            <li><a href="#">Envíos y Entregas</a></li>
+                            <li><a href="#">Cambios y Devoluciones</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contacto</h4>
+                        <ul class="contact-info">
+                            <li><ion-icon name="location-outline"></ion-icon> Medellín, Colombia</li>
+                            <li><ion-icon name="call-outline"></ion-icon> +57 300 000 0000</li>
+                            <li><ion-icon name="mail-outline"></ion-icon> soporte@knowu.com</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-newsletter">
+                    <h4>Suscríbete</h4>
+                    <p>Entérate de lanzamientos exclusivos y ofertas especiales.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu correo electrónico" required>
+                        <button type="submit"><ion-icon name="send-outline"></ion-icon></button>
+                    </form>
+                    <div class="payment-methods">
+                        <ion-icon name="card-outline"></ion-icon>
+                        <ion-icon name="cash-outline"></ion-icon>
+                        <ion-icon name="diamond-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-credit">
+                    <p>© 2025 Know U. Hecho con <ion-icon name="heart" class="heart-icon"></ion-icon> por <span class="author-name">Luis Medrano</span></p>
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Privacidad</a>
+                    <a href="#">Términos de Servicio</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button id="scrollBtn"><ion-icon name="arrow-up-outline" id="btn-up"></ion-icon></button>
+
+    <!-- Scripts Globales -->
+    <script src="static/js/main.js"></script>
+    <script src="static/js/cart.js"></script>
+    <script>
+    // --- Lógica del Carrito ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const buyButtons = document.querySelectorAll('.btn-buy-community');
+        buyButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const prompt = this.getAttribute('data-prompt');
+                const img = this.getAttribute('data-image');
+                
+                if(typeof addCustomDesignToCart === 'function') {
+                    addCustomDesignToCart(id, prompt, img, 35.00);
+                } else {
+                    console.error("Función del carrito no encontrada.");
+                }
+            });
+        });
+    });
+
+    // --- Lógica de Interacciones Sociales ---
+    
+    // Toggle Like
+    async function toggleLike(btnElement, designId) {
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const resp = await fetch('/api/toggle_like', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ design_id: designId })
+            });
+            const data = await resp.json();
+            
+            if(data.success) {
+                const icon = btnElement.querySelector('ion-icon');
+                const countSpan = btnElement.querySelector('.count');
+                
+                if(data.liked) {
+                    btnElement.classList.add('active');
+                    icon.setAttribute('name', 'heart');
+                } else {
+                    btnElement.classList.remove('active');
+                    icon.setAttribute('name', 'heart-outline');
+                }
+                countSpan.textContent = data.likes_count;
+            } else {
+                if(data.message.includes('autentica')) {
+                    alert('Debes iniciar sesión para dar me gusta.');
+                    window.location.href = '/login';
+                }
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    // Toggle Save
+    async function toggleSave(btnElement, designId) {
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const resp = await fetch('/api/toggle_save', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ design_id: designId })
+            });
+            const data = await resp.json();
+            
+            if(data.success) {
+                const icon = btnElement.querySelector('ion-icon');
+                if(data.saved) {
+                    btnElement.classList.add('active');
+                    icon.setAttribute('name', 'bookmark');
+                } else {
+                    btnElement.classList.remove('active');
+                    icon.setAttribute('name', 'bookmark-outline');
+                }
+            } else {
+                 if(data.message.includes('autentica')) {
+                    alert('Debes iniciar sesión para guardar diseños.');
+                    window.location.href = '/login';
+                }
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    // Modales de Comentarios UI
+    function openCommentModal(designId) {
+        document.getElementById('activeDesignId').value = designId;
+        document.getElementById('commentModalOverlay').classList.add('active');
+    }
+    
+    function closeCommentModal() {
+        document.getElementById('commentModalOverlay').classList.remove('active');
+        document.getElementById('commentText').value = '';
+    }
+    
+    async function submitComment() {
+        const designId = document.getElementById('activeDesignId').value;
+        const text = document.getElementById('commentText').value;
+        
+        if(!text.trim()) return;
+        
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const resp = await fetch('/api/add_comment', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken 
+                },
+                body: JSON.stringify({ design_id: designId, text: text })
+            });
+            const data = await resp.json();
+            
+            if(data.success) {
+                alert('¡Comentario añadido!');
+                // Recargar página simulando actualización profunda para que jinja lo lea (Temporal por simplicidad)
+                window.location.reload(); 
+            } else {
+                alert(data.message);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+</script>
+</body>
+
+</html>
